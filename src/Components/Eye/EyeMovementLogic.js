@@ -19,7 +19,7 @@ export class EyeMovementLogic {
         this.canvas = canvas;
         this.ctx = ctx;
         this.eyeLidPos = 0;
-        this.drawinStep = 2;
+        this.drawinStep = 1;
     }
 
     static getInstance(canvas, ctx) {
@@ -132,7 +132,9 @@ export class EyeMovementLogic {
         let { a, b, parabolaStartX, parabolaStartY, parabolaWidthCoef, cosA, sinA } =
             this.aboveEyeLidParams(horizontalPos, verticalPos, position);
 
-        this.ctx.lineWidth = 1.5;
+        const wantedSize = 2;
+        const originalSize = 1;
+        this.ctx.lineWidth = wantedSize;
 
         let countSteps = 0;
         for (let x = this.centerX; x >= -this.centerX; x -= 1) {
@@ -153,9 +155,14 @@ export class EyeMovementLogic {
             } else if (position === "Bottom") {
                 this.ctx.lineTo(this.canvas.width / 2 - x, this.canvas.height / 2 + y);
             }
+
+            if (countWidthStep) {
+                this.ctx.lineWidth -= (wantedSize - originalSize) / countWidthStep;
+                if (parseInt(x) % this.drawinStep === 0){ this.ctx.stroke(); }
+            }
         }
 
-        if (countWidthStep) { this.ctx.stroke(); }
+        //if (countWidthStep) { this.ctx.stroke(); }
         // first time counts how many steps it takes to get to eye pupil. Second time draws a line with correct width
         if (!countWidthStep) { this.aboveEyeLid(horizontalPos, verticalPos, position, countSteps); }
     }
@@ -202,9 +209,6 @@ export class EyeMovementLogic {
                 } else if (position === "Top") {
                     this.ctx.lineTo(this.canvas.width / 2 - x, this.canvas.height / 2 + y);
                 }
-
-                //controls steps for drawing
-                // if (parseInt(x) % this.drawinStep === 0) { this.ctx.stroke(); }
             }
         }
         this.ctx.stroke();

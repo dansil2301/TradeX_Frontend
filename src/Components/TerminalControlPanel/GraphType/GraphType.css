@@ -1,0 +1,9 @@
+.GraphType {
+    position: relative;
+    width: 80px;
+    transition: background-color 0.2s;
+}
+
+.GraphTypeLogo {
+    height: 70%;
+}
