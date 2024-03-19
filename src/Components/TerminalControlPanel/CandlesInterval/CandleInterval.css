@@ -5,3 +5,24 @@
     margin-left: 8%;
 }
 
+.CandleItem {
+    width: 100%;
+    height: 100%;
+    border: none;
+    background-color: transparent;
+    transition: background-color 0.2s;
+}
+
+.CandleItem:hover {
+    background-color: #4A4A4A;
+}
+
+.CandleInterval .CandleItem:first-child {
+    border-bottom-left-radius: 5px;
+    border-top-left-radius: 5px;
+}
+
+.CandleInterval .CandleItem:last-child {
+    border-bottom-right-radius: 5px;
+    border-top-right-radius: 5px;
+}
