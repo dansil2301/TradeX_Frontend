@@ -1,13 +1,12 @@
 import "../TerminalControlPanel.css"
 import "./StrategiesElement.css"
-import MainServeURL from "../../../../config.js";
 import {useEffect, useState} from "react";
-import axios from "axios";
 import {DropdownOption} from "../DropdownOption/DropdownOption.jsx";
 
 import StrategyLogo from "../../../assets/StrategyLogo.png"
 import {Arrow} from "../../Arrow/Arrow.jsx";
 import Loading from "../../Loading/Loading.jsx";
+import {StrategyTransmitter} from "../../../Logic/StrategyTransmitter.js";
 
 export function StrategiesElement({ setStrategy }) {
     const [isOpen, setIsOpen] = useState(false);
@@ -19,11 +18,9 @@ export function StrategiesElement({ setStrategy }) {
         setError(null);
         setLoading(true);
         const fetchStrategyNames = async () => {
-            axios.get(MainServeURL + "api/strategies/get-strategies-names")
-                .then(res => {setStrategiesNames(res.data["strategyNames"]);})
-                .catch(error => {
-                    setError(error);
-                })
+            await StrategyTransmitter.GetStrategiesNamesAsync()
+                .then(res => {setStrategiesNames(res);})
+                .catch(error => {setError(error);})
                 .finally(() => setLoading(false));
         };
 
