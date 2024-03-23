@@ -3,13 +3,12 @@ import {CandlesInterval} from "./CandlesInterval/CandlesInterval.jsx";
 import {GraphType} from "./GraphType/GraphType.jsx";
 import {StrategiesElement} from "./StrategiesElement/StrategiesElement.jsx";
 import PropTypes from "prop-types";
-import {TerminalHeader} from "../TerminalHeader/TerminalHeader.jsx";
 import {useEffect, useState} from "react";
 
 export function TerminalControlPanel({ setTerminalPageContainer }) {
-    const [candleInterval, setCandleInterval] = useState(NaN);
-    const [graphType, setGraphType] = useState(NaN);
-    const [strategy, setStrategy] = useState(NaN);
+    const [candleInterval, setCandleInterval] = useState('CANDLE_INTERVAL_1_MIN');
+    const [graphType, setGraphType] = useState('candle');
+    const [strategy, setStrategy] = useState('');
 
     useEffect(() => {
         setTerminalPageContainer({ candleInterval, graphType, strategy });

@@ -6,7 +6,7 @@ import {DropdownOption} from "../DropdownOption/DropdownOption.jsx";
 import StrategyLogo from "../../../assets/StrategyLogo.png"
 import {Arrow} from "../../Arrow/Arrow.jsx";
 import Loading from "../../Loading/Loading.jsx";
-import {StrategyTransmitter} from "../../../Logic/StrategyTransmitter.js";
+import {StrategyTransmitter} from "../../../Logic/StrategyLogic/StrategyTransmitter.js";
 
 export function StrategiesElement({ setStrategy }) {
     const [isOpen, setIsOpen] = useState(false);

@@ -1,4 +1,4 @@
-import {StrategyReceiver} from "../ServerReciever/StrategyReceiver.js";
+import {StrategyReceiver} from "../../ServerReciever/StrategyReceiver.js";
 
 export class StrategyTransmitter {
     static async GetStrategiesNamesAsync() {
