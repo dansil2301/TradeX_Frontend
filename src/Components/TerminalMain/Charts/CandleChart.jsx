@@ -1,10 +1,12 @@
 import 'chartjs-adapter-date-fns';
 import { OhlcElement, OhlcController, CandlestickElement, CandlestickController } from 'chartjs-chart-financial';
+import {CrosshairPlugin} from 'chartjs-plugin-crosshair';
 import Chart from 'chart.js/auto';
-Chart.register(OhlcElement, OhlcController, CandlestickElement, CandlestickController);
+Chart.register(OhlcElement, OhlcController, CandlestickElement, CandlestickController, CrosshairPlugin);
 
 import {useEffect, useRef} from "react";
 import PropTypes from "prop-types";
+import {StrategyCharts} from "../../../Logic/StrategyCharts.js";
 
 export function CandleChart({ data }) {
     const chartContainer = useRef(null);
@@ -12,22 +14,40 @@ export function CandleChart({ data }) {
     useEffect(() => {
         if (chartContainer && chartContainer.current) {
             const candlesToDisplay = 200;
-            const lastNCandles = data.slice(-candlesToDisplay);
+            const {datasets, yAxisConfig} = StrategyCharts.CreateDifferentDatasetsAndPositions(data, candlesToDisplay);
 
             const ctx = chartContainer.current.getContext('2d');
             const chartInstance = new Chart(ctx, {
                 type: "candlestick",
                 data: {
-                    datasets: [{
-                        label: 'Candlestick Chart',
-                        data: lastNCandles,
-                        yAxisID: "y",
-                    }]
+                    datasets: datasets
                 },
                 options: {
                     responsive: true,
                     animation: false,
                     maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false
+                        },
+                        crosshair: {
+                            line: {
+                                color: 'white',
+                                width: 1
+                            },
+                            sync: {
+                                enabled: true,
+                                suppressTooltips: false
+                            },
+                            zoom: {
+                                enabled: false,
+                            },
+                        }
+                    },
                     scales: {
                         x: {
                             type: "time",
@@ -39,6 +59,8 @@ export function CandleChart({ data }) {
                         y: {
                             position: "right",
                             beginAtZero: false,
+                            stackWeight: 3,
+                            stack: 'demo',
                             ticks: {
                                 color: "white",
                             },
@@ -52,6 +74,7 @@ export function CandleChart({ data }) {
                                 tickColor: "white",
                             },
                         },
+                        ...yAxisConfig,
                     },
                 }
             });
@@ -66,5 +89,5 @@ export function CandleChart({ data }) {
 }
 
 CandleChart.propTypes = {
-    data: PropTypes.array.isRequired,
+    data: PropTypes.object.isRequired,
 };

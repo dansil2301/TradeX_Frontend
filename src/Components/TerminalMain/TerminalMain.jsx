@@ -1,26 +1,15 @@
 import "./TerminalMain.css"
 import {CandleChart} from "./Charts/CandleChart.jsx";
 import {useEffect, useState} from "react";
-import axios from "axios";
-import MainServeURL from "../../../config.js";
 import PropTypes from "prop-types";
 import Loading from "../Loading/Loading.jsx";
+import {StrategyTransmitter} from "../../Logic/StrategyTransmitter.js";
+import {StrategyCandleDivider} from "../../Logic/StrategyCandleDivider.js";
 
 export function TerminalMain({ terminalPageContainer }) {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [candles, setCandles] = useState([]);
-
-    const convertCustomCandlesToChartjs = (candle) => {
-        return {
-            x: Date.parse(candle.time),
-            o: candle.open,
-            h: candle.high,
-            l: candle.low,
-            c: candle.close,
-            v: candle.volume
-        };
-    }
+    const [data, setData] = useState([]);
 
     useEffect(() => {
         const fetchCandlesStrategies = async () => {
@@ -34,18 +23,12 @@ export function TerminalMain({ terminalPageContainer }) {
 
             setError(null);
             setLoading(true);
-            axios.get(MainServeURL + "api/strategies/get-strategy-params-without-candles", {
-                params: params
-            })
+            await StrategyTransmitter.GetCandlesStrategyAsync(params)
                 .then(res => {
-                    setCandles(
-                        res.data.strategiesParams
-                            .map(candleStrategy => convertCustomCandlesToChartjs(candleStrategy.candle))
-                    );
+                    const dividedParams = StrategyCandleDivider.CandlesStrategyDivision(res);
+                    setData(dividedParams);
                 })
-                .catch(error => {
-                    setError(error);
-                })
+                .catch(error => {setError(error);})
                 .finally(() => setLoading(false));
         }
 
@@ -61,7 +44,7 @@ export function TerminalMain({ terminalPageContainer }) {
                     error ? (
                         <div className="Error">Error: {error.message}</div>
                     ) : (
-                        <CandleChart data={candles}/>
+                        <CandleChart data={data}/>
                     )
                 )}
             </div>
