@@ -1,19 +1,15 @@
 import {TerminalHeader} from "../Components/TerminalHeader/TerminalHeader.jsx";
-import {TerminalMain} from "../Components/TerminalMain/TerminalMain.jsx";
-import {useState} from "react";
+import ConnectedTerminalMain from "../Components/TerminalMain/TerminalMain.jsx";
+import {Provider} from "react-redux";
+import store from "../ConfigRedux/Terminal/Reducers.js";
 
 export function TerminalPage() {
-    const [terminalPageContainer, setTerminalPageContainer] = useState(
-        {
-            candleInterval: 'CANDLE_INTERVAL_1_MIN',
-            graphType: 'candle',
-            strategy: NaN
-        });
-
     return (
-        <div className="TerminalBody" style={{height: '98vh'}}>
-            <TerminalHeader setTerminalPageContainer={setTerminalPageContainer}/>
-            <TerminalMain terminalPageContainer={terminalPageContainer}/>
-        </div>
+        <Provider store={store}>
+            <div className="TerminalBody" style={{height: '98vh'}}>
+                <TerminalHeader />
+                <ConnectedTerminalMain />
+            </div>
+        </Provider>
     )
 }

@@ -7,8 +7,11 @@ import StrategyLogo from "../../../assets/StrategyLogo.png"
 import {Arrow} from "../../Arrow/Arrow.jsx";
 import Loading from "../../Loading/Loading.jsx";
 import {StrategyTransmitter} from "../../../Logic/StrategyLogic/StrategyTransmitter.js";
+import { setStrategy } from '../../../ConfigRedux/Terminal/Actions.js';
+import PropTypes from "prop-types";
+import {connect} from "react-redux";
 
-export function StrategiesElement({ setStrategy }) {
+const StrategiesElement = ({ setStrategy }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -54,5 +57,16 @@ export function StrategiesElement({ setStrategy }) {
                 </div>
             )}
         </div>
-    )
+    );
 }
+
+StrategiesElement.propTypes = {
+    setStrategy: PropTypes.func.isRequired
+};
+
+const mapDispatchToProps = {
+    setStrategy: setStrategy
+};
+
+const ConnectedStrategiesElement = connect(null, mapDispatchToProps)(StrategiesElement);
+export default ConnectedStrategiesElement;

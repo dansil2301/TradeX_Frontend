@@ -4,8 +4,11 @@ import {useState} from "react";
 
 import Candles from "../../../assets/GraphType/Candles.png"
 import {Arrow} from "../../Arrow/Arrow.jsx";
+import { connect } from 'react-redux';
+import { setGraphType } from '../../../ConfigRedux/Terminal/Actions.js';
+import PropTypes from "prop-types";
 
-export function GraphType({ setGraphType }) {
+const GraphType = ({ setGraphType }) => {
     const [isOpen, setIsOpen] = useState(false);
 
     const toggleDropdown = () => {
@@ -14,7 +17,7 @@ export function GraphType({ setGraphType }) {
 
     const handleGraphTypeChange = (type) => {
         setGraphType(type);
-        setIsOpen(false); // Close the dropdown after selecting an option
+        setIsOpen(false);
     };
 
     return (
@@ -31,4 +34,15 @@ export function GraphType({ setGraphType }) {
             )}
         </div>
     );
-}
+};
+
+GraphType.propTypes = {
+    setGraphType: PropTypes.func.isRequired
+};
+
+const mapDispatchToProps = {
+    setGraphType: setGraphType
+};
+
+const ConnectedGraphType = connect(null, mapDispatchToProps)(GraphType);
+export default ConnectedGraphType;

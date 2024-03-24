@@ -1,7 +1,10 @@
 import "./CandleInterval.css"
 import "../TerminalControlPanel.css"
+import { setCandleInterval } from '../../../ConfigRedux/Terminal/Actions.js';
+import PropTypes from "prop-types";
+import {connect} from "react-redux";
 
-export function CandlesInterval({ setCandleInterval }) {
+const CandlesInterval = ({ setCandleInterval }) => {
     const handleIntervalChange = (newInterval) => {
         setCandleInterval(newInterval);
     };
@@ -35,3 +38,14 @@ export function CandlesInterval({ setCandleInterval }) {
         </div>
     );
 }
+
+CandlesInterval.propTypes = {
+    setCandleInterval: PropTypes.func.isRequired
+};
+
+const mapDispatchToProps = {
+    setCandleInterval: setCandleInterval
+};
+
+const ConnectedCandlesInterval = connect(null, mapDispatchToProps)(CandlesInterval);
+export default ConnectedCandlesInterval;

@@ -19,6 +19,21 @@ export const plugins = ()=> {
             zoom: {
                 enabled: false,
             },
+        },
+        zoom: {
+            pan: {
+                enabled: true,
+                mode: 'x'
+            },
+            zoom: {
+                pinch: {
+                    enabled: true
+                },
+                wheel: {
+                    enabled: true
+                },
+                mode: 'x'
+            },
         }
     });
 };
