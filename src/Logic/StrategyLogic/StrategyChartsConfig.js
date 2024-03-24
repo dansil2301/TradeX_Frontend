@@ -1,4 +1,4 @@
-export const plugins = ()=> {
+export const plugins = (limits)=> {
     return ({
         legend: {
             display: false
@@ -6,19 +6,6 @@ export const plugins = ()=> {
         tooltip: {
             mode: 'index',
             intersect: false
-        },
-        crosshair: {
-            line: {
-                color: 'white',
-                width: 1
-            },
-            sync: {
-                enabled: true,
-                suppressTooltips: false
-            },
-            zoom: {
-                enabled: false,
-            },
         },
         zoom: {
             pan: {
@@ -34,6 +21,7 @@ export const plugins = ()=> {
                 },
                 mode: 'x'
             },
+            limits: limits,
         }
     });
 };
