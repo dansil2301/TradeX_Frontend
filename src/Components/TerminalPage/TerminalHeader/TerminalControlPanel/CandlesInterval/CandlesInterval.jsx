@@ -1,6 +1,6 @@
 import "./CandleInterval.css"
 import "../TerminalControlPanel.css"
-import { setCandleInterval } from '../../../ConfigRedux/Terminal/Actions.js';
+import { setCandleInterval } from '../../../../../ConfigRedux/Terminal/Actions.js';
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
 

@@ -1,9 +1,9 @@
 import {Fragment, useEffect, useRef, useState} from "react";
 import PropTypes from "prop-types";
-import {StrategyChartsFactory} from "../../../Logic/StrategyLogic/StrategyChartsFactory.js";
+import {StrategyChartsFactory} from "../../../../Logic/StrategyLogic/StrategyChartsFactory.js";
 import {connect} from "react-redux";
-import {StrategyTransmitter} from "../../../Logic/StrategyLogic/StrategyTransmitter.js";
-import Loading from "../../Loading/Loading.jsx";
+import {StrategyTransmitter} from "../../../../Logic/StrategyLogic/StrategyTransmitter.js";
+import Loading from "../../../Common/Loading/Loading.jsx";
 
 const StrategyChart = ({ candleInterval, strategy, graphType }) => {
     const chartContainer = useRef(null);

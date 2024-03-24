@@ -2,10 +2,10 @@ import "./GraphType.css"
 import "../TerminalControlPanel.css"
 import {useState} from "react";
 
-import Candles from "../../../assets/GraphType/Candles.png"
-import {Arrow} from "../../Arrow/Arrow.jsx";
+import Candles from "../../../../../assets/GraphType/Candles.png"
+import {Arrow} from "../../../../Common/Arrow/Arrow.jsx";
 import { connect } from 'react-redux';
-import { setGraphType } from '../../../ConfigRedux/Terminal/Actions.js';
+import { setGraphType } from '../../../../../ConfigRedux/Terminal/Actions.js';
 import PropTypes from "prop-types";
 
 const GraphType = ({ setGraphType }) => {

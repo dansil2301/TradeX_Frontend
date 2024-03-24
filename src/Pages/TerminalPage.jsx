@@ -1,5 +1,5 @@
-import {TerminalHeader} from "../Components/TerminalHeader/TerminalHeader.jsx";
-import ConnectedTerminalMain from "../Components/TerminalMain/TerminalMain.jsx";
+import {TerminalHeader} from "../Components/TerminalPage/TerminalHeader/TerminalHeader.jsx";
+import ConnectedTerminalMain from "../Components/TerminalPage/TerminalMain/TerminalMain.jsx";
 import {Provider} from "react-redux";
 import store from "../ConfigRedux/Terminal/Reducers.js";
 

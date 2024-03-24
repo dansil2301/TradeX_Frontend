@@ -1,6 +1,6 @@
 import "./Eye.css"
 import {useEffect, useRef, useState} from "react";
-import {EyeMovementLogic} from "../../Logic/EyeMovementLogic.js";
+import {EyeMovementLogic} from "../../../Logic/EyeMovementLogic.js";
 
 export function Eye() {
     const canvasRef = useRef(null);
