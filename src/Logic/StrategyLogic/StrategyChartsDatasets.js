@@ -47,7 +47,7 @@ export class StrategyChartsDatasets {
         for (const strategy in data["strategies"]) {
             if (separateGraph.includes(strategy)) {
                 datasets.push(this.lineDatasetCreation(data, strategy, candlesToDisplay, "separate"));
-                yAxisConfig["ySEP"] = { position: 'right', stack: 'demo', stackWeight: 1 };
+                yAxisConfig["ySEP"] = { position: 'right', stack: 'demo', stackWeight: 1, offset: true };
             }
             else {
                 datasets.push(this.lineDatasetCreation(data, strategy, candlesToDisplay, "mixed"));
