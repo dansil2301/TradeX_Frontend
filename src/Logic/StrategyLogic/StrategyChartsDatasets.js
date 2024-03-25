@@ -6,6 +6,7 @@ export class StrategyChartsDatasets {
     static candleDatasetCreation(data, candlesToDisplay, graphType) {
         if (graphType === "candle") {
             return ({
+                label: 'Market data',
                 type: 'candlestick',
                 data: data["candles"].slice(-candlesToDisplay),
                 yAxisID: "y",
@@ -14,6 +15,7 @@ export class StrategyChartsDatasets {
         }
         else if (graphType === "line") {
             return ({
+                label: 'Market data',
                 type: 'line',
                 data: data["candles"].map(candle => ({x: candle.x, y: candle.c})).slice(-candlesToDisplay),
                 yAxisID: "y",
@@ -39,21 +41,18 @@ export class StrategyChartsDatasets {
     }
 
     static CreateDifferentDatasetsAndPositions(data, candlesToDisplay, graphType) {
-        const yAxisConfig = {};
         let datasets = [];
-
         datasets.push(this.candleDatasetCreation(data, candlesToDisplay, graphType));
 
         for (const strategy in data["strategies"]) {
             if (separateGraph.includes(strategy)) {
                 datasets.push(this.lineDatasetCreation(data, strategy, candlesToDisplay, "separate"));
-                yAxisConfig["ySEP"] = { position: 'right', stack: 'demo', stackWeight: 1, offset: true };
             }
             else {
                 datasets.push(this.lineDatasetCreation(data, strategy, candlesToDisplay, "mixed"));
             }
         }
 
-        return {datasets, yAxisConfig};
+        return datasets;
     }
 }

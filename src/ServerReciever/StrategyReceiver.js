@@ -27,4 +27,17 @@ export class StrategyReceiver {
                 });
         });
     }
+
+    static async GetCandlesStrategyFixedPeriodFromAsync(params) {
+        const API_URL = MainServeURL + "api/strategies/get-strategy-params-fixed-length-candles";
+        return new Promise((resolve, reject) => {
+            axios.get(API_URL, {params})
+                .then(response => {
+                    resolve(response.data.strategiesParams);
+                })
+                .catch(error => {
+                    reject(error);
+                });
+        });
+    }
 }
