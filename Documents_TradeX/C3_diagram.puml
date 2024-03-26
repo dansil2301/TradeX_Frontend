@@ -1,0 +1,34 @@
+@startuml Basic Sample
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+System_Boundary(c3, "c3") {
+    System_Boundary(design, "design") {
+        Container(TerminalHeader, "Terminal Header", "Component collection: React package", "")
+        Container(TerminalMain, "Terminal Main", "Component collection: React package", "")
+        Container(Common, "Common components", "Component collection: React package", "")
+    }
+
+    System_Boundary(logic, "logic") {
+        Container(StrategyLogic, "Strategy Logic", "JS cls collection: React package", "")
+        Container(EyeMvmLogic, "Eye Movement Logic", "JS cls collection: React package", "")
+    }
+
+    Container(StrategyReceiver, "Strategy Receiver", "JS cls collection: React package", "")
+}
+Container(web_app, "Web Application", "Container: Java Spring Boot & REST", "Provides all the business rules to manipulate the data in the DB with JSON/HTTP API")
+Container(db, "DataBase", "Container: MySQL", "stores users and market candles")
+Container(tinkoffAPI, "Tinkoff API", "Container: 3d party API", "stores market candles")
+
+Rel(TerminalMain, Common, "Uses")
+Rel(TerminalHeader, Common, "Uses")
+Rel(TerminalMain, TerminalHeader, "Uses")
+
+Rel(TerminalMain, StrategyLogic, "Uses")
+Rel(Common, EyeMvmLogic, "Uses")
+
+Rel(StrategyLogic, StrategyReceiver, "Uses")
+
+Rel(StrategyReceiver, web_app, "Uses")
+Rel(web_app, tinkoffAPI, "Gets market data from", "HTTPS")
+Rel(web_app, db, "Gets user data from", "HTTPS")
+@enduml
