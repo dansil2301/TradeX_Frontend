@@ -1,4 +1,20 @@
-export const plugins = (limits)=> {
+export const strategyChart = (datasets, limits, yAxisConfig) => {
+    return ({
+        type: "candlestick",
+        data: {
+            datasets: datasets
+        },
+        options: {
+            responsive: true,
+            animation: false,
+            maintainAspectRatio: false,
+            plugins: plugins(limits),
+            scales: scales(yAxisConfig),
+        }
+    });
+}
+
+const plugins = (limits)=> {
     return ({
         legend: {
             display: false
@@ -26,13 +42,10 @@ export const plugins = (limits)=> {
     });
 };
 
-export const scales = (yAxisConfig) => {
+const scales = (yAxisConfig) => {
     return ({
         x: {
-            type: "time",
-            time: {
-                unit: "minute",
-            },
+            type: "timeseries",
             offset: false,
         },
         y: {
@@ -56,4 +69,3 @@ export const scales = (yAxisConfig) => {
         ...yAxisConfig,
     });
 }
-

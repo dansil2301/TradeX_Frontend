@@ -7,29 +7,19 @@ Chart.register(OhlcElement, OhlcController, CandlestickElement, CandlestickContr
 
 import {StrategyCandleDivider} from "./Utils/StrategyCandleDivider.js";
 import {StrategyChartsDatasets} from "./StrategyChartsDatasets.js";
-import {plugins, scales} from "./StrategyChartsConfig.js";
 import {StrategyChartZoomingCalc} from "./Utils/StrategyChartZoomingCalc.js";
+import {strategyChart} from "./StrategyChartConfig.js";
+import {StrategyChartsSepGraph} from "./StrategyChartsSepGraph.js";
 
 export class StrategyChartsFactory {
-    static candlesToDisplay = 200;
+    static candlesToDisplay = 150;
 
     static CreateChart(data, ctx, graphType) {
-        const formatedMarketData = StrategyCandleDivider.CandlesStrategyDivision(data);
-        const limits = StrategyChartZoomingCalc.GetLimitsOfZooming(formatedMarketData.candles, this.candlesToDisplay);
-        const {datasets, yAxisConfig} = StrategyChartsDatasets.CreateDifferentDatasetsAndPositions(formatedMarketData, this.candlesToDisplay, graphType);
+        const formattedMarketData = StrategyCandleDivider.CandlesStrategyDivision(data);
+        const limits = StrategyChartZoomingCalc.GetLimitsOfZooming(formattedMarketData.candles, this.candlesToDisplay);
+        const datasets = StrategyChartsDatasets.CreateDifferentDatasetsAndPositions(formattedMarketData, graphType);
+        const yAxisConfig = StrategyChartsSepGraph.GetYAxisConfig(datasets);
 
-        return new Chart(ctx, {
-            type: "candlestick",
-            data: {
-                datasets: datasets
-            },
-            options: {
-                responsive: true,
-                animation: false,
-                maintainAspectRatio: false,
-                plugins: plugins(limits),
-                scales: scales(yAxisConfig),
-            }
-        });
+        return new Chart(ctx, strategyChart(datasets, limits, yAxisConfig));
     }
 }
