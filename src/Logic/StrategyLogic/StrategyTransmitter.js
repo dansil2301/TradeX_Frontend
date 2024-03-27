@@ -8,4 +8,8 @@ export class StrategyTransmitter {
     static async GetCandlesStrategyAsync(params) {
         return await StrategyReceiver.GetCandlesStrategyAsync(params);
     }
+
+    static async GetCandlesStrategyFixedPeriodFromAsync(params) {
+        return await StrategyReceiver.GetCandlesStrategyFixedPeriodFromAsync(params);
+    }
 }

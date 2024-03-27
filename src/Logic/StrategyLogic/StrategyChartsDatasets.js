@@ -3,21 +3,20 @@ const separateGraph = [
 ]
 
 export class StrategyChartsDatasets {
-    static candleDatasetCreation(data, candlesToDisplay, graphType) {
+    static candleDatasetCreation(data, graphType) {
         if (graphType === "candle") {
             return ({
                 label: 'Market data',
                 type: 'candlestick',
-                data: data["candles"].slice(-candlesToDisplay),
+                data: data["candles"],
                 yAxisID: "y",
-                backgroundColor: "gray",
             });
         }
         else if (graphType === "line") {
             return ({
                 label: 'Market data',
                 type: 'line',
-                data: data["candles"].map(candle => ({x: candle.x, y: candle.c})).slice(-candlesToDisplay),
+                data: data["candles"].map(candle => ({x: candle.x, y: candle.c})),
                 yAxisID: "y",
                 backgroundColor: "#4D637C",
                 borderColor: '#4D637C',
@@ -26,11 +25,11 @@ export class StrategyChartsDatasets {
         }
     }
 
-    static lineDatasetCreation(data, strategy, candlesToDisplay, type) {
+    static lineDatasetCreation(data, strategy, type) {
         const yAxisID = type === "separate" ? "ySEP" : "y";
         return ({
             label: strategy,
-            data: data["strategies"][strategy].slice(-candlesToDisplay),
+            data: data["strategies"][strategy],
             yAxisID: yAxisID,
             type: "line",
             backgroundColor: "white",
@@ -40,16 +39,16 @@ export class StrategyChartsDatasets {
         });
     }
 
-    static CreateDifferentDatasetsAndPositions(data, candlesToDisplay, graphType) {
+    static CreateDifferentDatasetsAndPositions(data, graphType) {
         let datasets = [];
-        datasets.push(this.candleDatasetCreation(data, candlesToDisplay, graphType));
+        datasets.push(this.candleDatasetCreation(data, graphType));
 
         for (const strategy in data["strategies"]) {
             if (separateGraph.includes(strategy)) {
-                datasets.push(this.lineDatasetCreation(data, strategy, candlesToDisplay, "separate"));
+                datasets.push(this.lineDatasetCreation(data, strategy, "separate"));
             }
             else {
-                datasets.push(this.lineDatasetCreation(data, strategy, candlesToDisplay, "mixed"));
+                datasets.push(this.lineDatasetCreation(data, strategy, "mixed"));
             }
         }
 

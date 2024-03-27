@@ -4,6 +4,7 @@ import {StrategyChartsFactory} from "../../../../Logic/StrategyLogic/StrategyCha
 import {connect} from "react-redux";
 import {StrategyTransmitter} from "../../../../Logic/StrategyLogic/StrategyTransmitter.js";
 import Loading from "../../../Common/Loading/Loading.jsx";
+import {getCurrentTimeInISOFormat} from "../../../../Logic/StrategyLogic/Utils/CurrentTimeForJson.js";
 
 const StrategyChart = ({ candleInterval, strategy, graphType }) => {
     const chartContainer = useRef(null);
@@ -14,16 +15,16 @@ const StrategyChart = ({ candleInterval, strategy, graphType }) => {
     useEffect(() => {
         const fetchCandlesStrategies = async () => {
             const params = {
-                'from': '2023-01-05T00:00:00Z',
-                'to': '2023-01-06T00:00:00Z',
+                'from': getCurrentTimeInISOFormat(),
                 'figi': 'BBG004730N88',
                 'interval': candleInterval,
+                'candleLength': 150,
                 'strategiesNames': strategy
             };
 
             setError(null);
             setLoading(true);
-            await StrategyTransmitter.GetCandlesStrategyAsync(params)
+            await StrategyTransmitter.GetCandlesStrategyFixedPeriodFromAsync(params)
                 .then(res => {setData(res);})
                 .catch(error => {setError(error);})
                 .finally(() => setLoading(false));

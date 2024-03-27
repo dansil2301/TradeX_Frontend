@@ -12,12 +12,12 @@ import {strategyChart} from "./StrategyChartConfig.js";
 import {StrategyChartsSepGraph} from "./StrategyChartsSepGraph.js";
 
 export class StrategyChartsFactory {
-    static candlesToDisplay = 200;
+    static candlesToDisplay = 150;
 
     static CreateChart(data, ctx, graphType) {
         const formattedMarketData = StrategyCandleDivider.CandlesStrategyDivision(data);
         const limits = StrategyChartZoomingCalc.GetLimitsOfZooming(formattedMarketData.candles, this.candlesToDisplay);
-        const datasets = StrategyChartsDatasets.CreateDifferentDatasetsAndPositions(formattedMarketData, this.candlesToDisplay, graphType);
+        const datasets = StrategyChartsDatasets.CreateDifferentDatasetsAndPositions(formattedMarketData, graphType);
         const yAxisConfig = StrategyChartsSepGraph.GetYAxisConfig(datasets);
 
         return new Chart(ctx, strategyChart(datasets, limits, yAxisConfig));

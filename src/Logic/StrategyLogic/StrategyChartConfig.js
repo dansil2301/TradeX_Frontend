@@ -45,10 +45,7 @@ const plugins = (limits)=> {
 const scales = (yAxisConfig) => {
     return ({
         x: {
-            type: "time",
-            time: {
-                unit: "minute",
-            },
+            type: "timeseries",
             offset: false,
         },
         y: {
