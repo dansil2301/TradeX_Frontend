@@ -26,14 +26,17 @@ const plugins = (limits)=> {
         zoom: {
             pan: {
                 enabled: true,
-                mode: 'x'
+                mode: 'x',
+                onPan: () => {
+
+                }
             },
             zoom: {
                 pinch: {
                     enabled: true
                 },
                 wheel: {
-                    enabled: true
+                    enabled: false
                 },
                 mode: 'x'
             },

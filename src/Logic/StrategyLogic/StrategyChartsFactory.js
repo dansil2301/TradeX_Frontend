@@ -14,6 +14,10 @@ import {StrategyChartsSepGraph} from "./StrategyChartsSepGraph.js";
 export class StrategyChartsFactory {
     static candlesToDisplay = 150;
 
+    static FetchExtraData() {
+
+    }
+
     static CreateChart(data, ctx, graphType) {
         const formattedMarketData = StrategyCandleDivider.CandlesStrategyDivision(data);
         const limits = StrategyChartZoomingCalc.GetLimitsOfZooming(formattedMarketData.candles, this.candlesToDisplay);
