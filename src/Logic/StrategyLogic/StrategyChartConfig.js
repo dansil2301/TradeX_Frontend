@@ -1,7 +1,7 @@
 let globalLimits;
 let isFetchingData = false;
 
-export const strategyChart = (datasets, limits, yAxisConfig, getNewZooming, updateChart, fetchExtraDataAndUpdate) => {
+export const strategyChart = (datasets, limits, yAxisConfig, getNewZooming, updateDatasets, fetchExtraData) => {
     globalLimits = limits;
     return ({
         type: "candlestick",
@@ -12,13 +12,13 @@ export const strategyChart = (datasets, limits, yAxisConfig, getNewZooming, upda
             responsive: true,
             animation: false,
             maintainAspectRatio: false,
-            plugins: plugins(getNewZooming, updateChart, fetchExtraDataAndUpdate),
+            plugins: plugins(getNewZooming, updateDatasets, fetchExtraData),
             scales: scales(yAxisConfig),
         }
     });
 }
 
-const plugins = (getNewZooming, updateChart, fetchExtraDataAndUpdate)=> {
+const plugins = (getNewZooming, updateDatasets, fetchExtraData)=> {
     return ({
         legend: {
             display: false
@@ -35,16 +35,23 @@ const plugins = (getNewZooming, updateChart, fetchExtraDataAndUpdate)=> {
                     const chartArea = chart.chartArea;
                     const xScale = chart.scales['x'];
                     const minIndex = xScale.getValueForPixel(chartArea.left);
-                    //const maxIndex = xScale.getValueForPixel(chartArea.right);
+                    const maxIndex = xScale.getValueForPixel(chartArea.right);
                     const rangeToTrigger = globalLimits.x.minRange * 0.9 // render range made a bit wider
 
                     if (!isFetchingData && minIndex <= globalLimits.x.min + rangeToTrigger) {
                         isFetchingData = true;
-                        const data = await fetchExtraDataAndUpdate(chart);
-                        globalLimits = getNewZooming(data);
-                        updateChart(chart, data);
-                        isFetchingData = false;
+                        await fetchExtraData(false)
+                            .then(data => {
+                                globalLimits.x.min = getNewZooming(data).x.min;
+                                updateDatasets(chart, data); })
+                            .catch(error => { console.log(error) })
+                            .finally(() => { isFetchingData = false; })
                     }
+                    if (!isFetchingData && maxIndex >= globalLimits.x.max - rangeToTrigger) {
+                        console.log("over right border");
+                    }
+
+                    chart.update();
                 }
             },
             zoom: {
@@ -67,12 +74,16 @@ const scales = (yAxisConfig) => {
             offset: false,
         },
         y: {
+            type: 'linear',
             position: "right",
             beginAtZero: false,
             stackWeight: 3,
             stack: 'demo',
             ticks: {
                 color: "white",
+                callback: function(value) {
+                    return value.toFixed(2);
+                }
             },
             border: {
                 color: "white", width: 2
