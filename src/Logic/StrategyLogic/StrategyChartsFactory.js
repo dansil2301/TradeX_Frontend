@@ -10,20 +10,85 @@ import {StrategyChartsDatasets} from "./StrategyChartsDatasets.js";
 import {StrategyChartZoomingCalc} from "./Utils/StrategyChartZoomingCalc.js";
 import {strategyChart} from "./StrategyChartConfig.js";
 import {StrategyChartsSepGraph} from "./StrategyChartsSepGraph.js";
+import {getCurrentTimeInISOFormat, getTimeInISOFormat} from "./Utils/CurrentTimeForJson.js";
+import {StrategyTransmitter} from "./StrategyTransmitter.js";
 
 export class StrategyChartsFactory {
-    static candlesToDisplay = 150;
+    constructor() {
+        if (!StrategyChartsFactory.instance) {
+            this.candlesToDisplay = 150;
+            this.lastDateInCurrentDataset = null;
+            this.candleInterval;
+            this.strategy;
+            StrategyChartsFactory.instance = this;
+        }
 
-    static FetchExtraData() {
-
+        return StrategyChartsFactory.instance;
     }
 
-    static CreateChart(data, ctx, graphType) {
+    async fetchInitialData(candleInterval, strategy) {
+        this.candleInterval = candleInterval;
+        this.strategy = strategy;
+
+        const params = {
+            'from': getCurrentTimeInISOFormat(),
+            'figi': 'BBG004730N88',
+            'interval': candleInterval,
+            'candleLength': this.candlesToDisplay,
+            'strategiesNames': strategy
+        };
+
+        return await StrategyTransmitter.GetCandlesStrategyFixedPeriodFromAsync(params);
+    }
+
+    async fetchExtraDataAndUpdate(candleInterval, strategy) {
+        if (!this.isFetchingData) {
+            const params = {
+                'from': getTimeInISOFormat(this.lastDateInCurrentDataset),
+                'figi': 'BBG004730N88',
+                'interval': candleInterval,
+                'candleLength': this.candlesToDisplay,
+                'strategiesNames': strategy
+            };
+
+            const data = await StrategyTransmitter.GetCandlesStrategyFixedPeriodFromAsync(params);
+            return StrategyCandleDivider.CandlesStrategyDivision(data);
+        }
+    }
+
+    getNewZooming(data, candlesToDisplay) {
+        return StrategyChartZoomingCalc.GetLimitsOfZooming(data.candles, candlesToDisplay);
+    }
+
+    updateChart(chart, data, graphType) {
+        this.lastDateInCurrentDataset = data.candles.at(0).x;
+        const datasets = StrategyChartsDatasets.CreateDifferentDatasetsAndPositions(data, graphType);
+        let newDatasets = [];
+
+        datasets.forEach(newDataset => {
+            chart.data.datasets.forEach(chartDataset => {
+                if (newDataset.label === chartDataset.label) {
+                    const tmpNewDataset = newDataset;
+                    tmpNewDataset.data = tmpNewDataset.data.concat(chartDataset.data);
+                    newDatasets.push(tmpNewDataset);
+                }
+            });
+        });
+
+        chart.data.datasets = newDatasets;
+        chart.update();
+    }
+
+    createChart(data, ctx, graphType) {
         const formattedMarketData = StrategyCandleDivider.CandlesStrategyDivision(data);
         const limits = StrategyChartZoomingCalc.GetLimitsOfZooming(formattedMarketData.candles, this.candlesToDisplay);
         const datasets = StrategyChartsDatasets.CreateDifferentDatasetsAndPositions(formattedMarketData, graphType);
         const yAxisConfig = StrategyChartsSepGraph.GetYAxisConfig(datasets);
 
-        return new Chart(ctx, strategyChart(datasets, limits, yAxisConfig));
+        this.lastDateInCurrentDataset = formattedMarketData.candles.at(0).x;
+        return new Chart(ctx, strategyChart(datasets, limits, yAxisConfig,
+            (data) => this.getNewZooming(data, this.candlesToDisplay),
+            (chart, data) => this.updateChart(chart, data, graphType),
+            () => this.fetchExtraDataAndUpdate(this.candleInterval, this.strategy)));
     }
 }

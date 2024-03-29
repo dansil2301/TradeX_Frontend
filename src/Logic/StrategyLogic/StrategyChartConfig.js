@@ -1,4 +1,8 @@
-export const strategyChart = (datasets, limits, yAxisConfig) => {
+let globalLimits;
+let isFetchingData = false;
+
+export const strategyChart = (datasets, limits, yAxisConfig, getNewZooming, updateChart, fetchExtraDataAndUpdate) => {
+    globalLimits = limits;
     return ({
         type: "candlestick",
         data: {
@@ -8,13 +12,13 @@ export const strategyChart = (datasets, limits, yAxisConfig) => {
             responsive: true,
             animation: false,
             maintainAspectRatio: false,
-            plugins: plugins(limits),
+            plugins: plugins(getNewZooming, updateChart, fetchExtraDataAndUpdate),
             scales: scales(yAxisConfig),
         }
     });
 }
 
-const plugins = (limits)=> {
+const plugins = (getNewZooming, updateChart, fetchExtraDataAndUpdate)=> {
     return ({
         legend: {
             display: false
@@ -27,8 +31,20 @@ const plugins = (limits)=> {
             pan: {
                 enabled: true,
                 mode: 'x',
-                onPan: () => {
+                onPan: async ({chart}) => {
+                    const chartArea = chart.chartArea;
+                    const xScale = chart.scales['x'];
+                    const minIndex = xScale.getValueForPixel(chartArea.left);
+                    //const maxIndex = xScale.getValueForPixel(chartArea.right);
+                    const rangeToTrigger = globalLimits.x.minRange * 0.9 // render range made a bit wider
 
+                    if (!isFetchingData && minIndex <= globalLimits.x.min + rangeToTrigger) {
+                        isFetchingData = true;
+                        const data = await fetchExtraDataAndUpdate(chart);
+                        globalLimits = getNewZooming(data);
+                        updateChart(chart, data);
+                        isFetchingData = false;
+                    }
                 }
             },
             zoom: {
@@ -40,7 +56,6 @@ const plugins = (limits)=> {
                 },
                 mode: 'x'
             },
-            limits: limits,
         }
     });
 };
@@ -48,7 +63,7 @@ const plugins = (limits)=> {
 const scales = (yAxisConfig) => {
     return ({
         x: {
-            type: "timeseries",
+            type: 'timeseries',
             offset: false,
         },
         y: {

@@ -2,11 +2,10 @@ import {Fragment, useEffect, useRef, useState} from "react";
 import PropTypes from "prop-types";
 import {StrategyChartsFactory} from "../../../../Logic/StrategyLogic/StrategyChartsFactory.js";
 import {connect} from "react-redux";
-import {StrategyTransmitter} from "../../../../Logic/StrategyLogic/StrategyTransmitter.js";
 import Loading from "../../../Common/Loading/Loading.jsx";
-import {getCurrentTimeInISOFormat} from "../../../../Logic/StrategyLogic/Utils/CurrentTimeForJson.js";
 
 const StrategyChart = ({ candleInterval, strategy, graphType }) => {
+    const chartFactory = new StrategyChartsFactory();
     const chartContainer = useRef(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -14,17 +13,9 @@ const StrategyChart = ({ candleInterval, strategy, graphType }) => {
 
     useEffect(() => {
         const fetchCandlesStrategies = async () => {
-            const params = {
-                'from': getCurrentTimeInISOFormat(),
-                'figi': 'BBG004730N88',
-                'interval': candleInterval,
-                'candleLength': 150,
-                'strategiesNames': strategy
-            };
-
             setError(null);
             setLoading(true);
-            await StrategyTransmitter.GetCandlesStrategyFixedPeriodFromAsync(params)
+            chartFactory.fetchInitialData(candleInterval, strategy)
                 .then(res => {setData(res);})
                 .catch(error => {setError(error);})
                 .finally(() => setLoading(false));
@@ -36,7 +27,7 @@ const StrategyChart = ({ candleInterval, strategy, graphType }) => {
     useEffect(() => {
         if (chartContainer && chartContainer.current) {
             const ctx = chartContainer.current.getContext('2d');
-            const chartInstance = StrategyChartsFactory.CreateChart(data, ctx, graphType);
+            const chartInstance = chartFactory.createChart(data, ctx, graphType);
 
             return () => {
                 chartInstance.destroy();
