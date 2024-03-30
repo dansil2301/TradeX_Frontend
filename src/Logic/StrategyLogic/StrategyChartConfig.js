@@ -42,16 +42,24 @@ const plugins = (getNewZooming, updateDatasets, fetchExtraData)=> {
                         isFetchingData = true;
                         await fetchExtraData(false)
                             .then(data => {
-                                globalLimits.x.min = getNewZooming(data).x.min;
-                                updateDatasets(chart, data); })
+                                updateDatasets(chart, data, false);
+                                chart.update();
+                                globalLimits = getNewZooming(chart.data.datasets[0].data);
+                            })
                             .catch(error => { console.log(error) })
                             .finally(() => { isFetchingData = false; })
                     }
                     if (!isFetchingData && maxIndex >= globalLimits.x.max - rangeToTrigger) {
-                        console.log("over right border");
+                        isFetchingData = true;
+                        await fetchExtraData(true)
+                            .then(data => {
+                                updateDatasets(chart, data, true);
+                                chart.update();
+                                globalLimits = getNewZooming(chart.data.datasets[0].data);
+                            })
+                            .catch(error => { console.log(error) })
+                            .finally(() => { isFetchingData = false; })
                     }
-
-                    chart.update();
                 }
             },
             zoom: {

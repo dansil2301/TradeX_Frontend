@@ -5,11 +5,11 @@ import ZoomPlugin from 'chartjs-plugin-zoom';
 import Chart from 'chart.js/auto';
 Chart.register(OhlcElement, OhlcController, CandlestickElement, CandlestickController, ZoomPlugin);
 
-import {StrategyCandleDivider} from "./Utils/StrategyCandleDivider.js";
-import {StrategyChartsDatasets} from "./StrategyChartsDatasets.js";
-import {StrategyChartZoomingCalc} from "./Utils/StrategyChartZoomingCalc.js";
+import {StrategyCandleDivider} from "./DataPreprocessingClassses/StrategyCandleDivider.js";
+import {StrategyChartsDatasets} from "./DataPreprocessingClassses/StrategyChartsDatasets.js";
+import {StrategyChartZoomingCalc} from "./DataPreprocessingClassses/StrategyChartZoomingCalc.js";
 import {strategyChart} from "./StrategyChartConfig.js";
-import {StrategyChartsSepGraph} from "./StrategyChartsSepGraph.js";
+import {StrategyChartsSepGraph} from "./DataPreprocessingClassses/StrategyChartsSepGraph.js";
 import {getCurrentTimeInISOFormat, getTimeInISOFormat} from "./Utils/CurrentTimeForJson.js";
 import {StrategyTransmitter} from "./StrategyTransmitter.js";
 
@@ -45,7 +45,7 @@ export class StrategyChartsFactory {
     async fetchExtraData(candleInterval, strategy, isToFuture) {
         if (!this.isFetchingData) {
             const params = {
-                'from': getTimeInISOFormat(this.lastDateInCurrentDataset),
+                'from': isToFuture ? getTimeInISOFormat(this.firstDateInCurrentDataset) : getTimeInISOFormat(this.lastDateInCurrentDataset),
                 'figi': 'BBG004730N88',
                 'interval': candleInterval,
                 'candleLength': this.candlesToDisplay,
@@ -59,11 +59,10 @@ export class StrategyChartsFactory {
     }
 
     getNewZooming(data, candlesToDisplay) {
-        return StrategyChartZoomingCalc.GetLimitsOfZooming(data.candles, candlesToDisplay);
+        return StrategyChartZoomingCalc.GetLimitsOfZooming(data, candlesToDisplay);
     }
 
-    updateDatasets(chart, data, graphType) {
-        this.lastDateInCurrentDataset = data.candles.at(0).x;
+    updateDatasets(chart, data, isToFuture, graphType) {
         const datasets = StrategyChartsDatasets.CreateDifferentDatasetsAndPositions(data, graphType);
         let newDatasets = [];
 
@@ -71,12 +70,25 @@ export class StrategyChartsFactory {
             chart.data.datasets.forEach(chartDataset => {
                 if (newDataset.label === chartDataset.label) {
                     const tmpNewDataset = newDataset;
-                    tmpNewDataset.data = tmpNewDataset.data.concat(chartDataset.data);
+                    if (!isToFuture)
+                    { tmpNewDataset.data = tmpNewDataset.data.concat(chartDataset.data); }
+                    else
+                    { tmpNewDataset.data = chartDataset.data.concat(tmpNewDataset.data) }
+
+                    if (tmpNewDataset.data.length > this.candlesToDisplay * 3) { // more than 3 screens of data are loaded
+                        if (!isToFuture)
+                        { tmpNewDataset.data.splice(-(newDatasets.length - this.candlesToDisplay * 3)); }
+                        else
+                        { tmpNewDataset.data.splice(0, newDatasets.length - this.candlesToDisplay * 3); }
+                    }
+
                     newDatasets.push(tmpNewDataset);
                 }
             });
         });
 
+        this.lastDateInCurrentDataset = newDatasets[0].data[0].x;
+        this.firstDateInCurrentDataset = newDatasets[0].data[newDatasets[0].data.length - 1].x;
         chart.data.datasets = newDatasets;
     }
 
@@ -87,9 +99,10 @@ export class StrategyChartsFactory {
         const yAxisConfig = StrategyChartsSepGraph.GetYAxisConfig(datasets);
 
         this.lastDateInCurrentDataset = formattedMarketData.candles.at(0).x;
+        this.firstDateInCurrentDataset = formattedMarketData.candles.at(formattedMarketData.candles.length - 1).x;
         return new Chart(ctx, strategyChart(datasets, limits, yAxisConfig,
-            (data) => this.getNewZooming(data, this.candlesToDisplay),
-            (chart, data) => this.updateDatasets(chart, data, graphType),
+            (data) => this.getNewZooming(data),
+            (chart, data, isToFuture) => this.updateDatasets(chart, data, isToFuture, graphType),
             (isToFuture) => this.fetchExtraData(this.candleInterval, this.strategy, isToFuture)));
     }
 }

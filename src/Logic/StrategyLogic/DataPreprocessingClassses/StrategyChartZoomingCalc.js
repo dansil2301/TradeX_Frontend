@@ -1,12 +1,12 @@
 export class StrategyChartZoomingCalc {
-    static GetLimitsOfZooming(candles, candlesToDisplay) {
-        const datePoints = candles.slice(-candlesToDisplay).map(candle => candle.x);
+    static GetLimitsOfZooming(candles) {
+        const datePoints = candles.slice().map(candle => candle.x);
 
         const minDate = Math.min(...datePoints);
         const maxDate = Math.max(...datePoints);
 
         const range = maxDate - minDate;
-        const zoomRange = range / 5;
+        const zoomRange = range / datePoints.length;
 
         return {
             x: {
@@ -16,4 +16,6 @@ export class StrategyChartZoomingCalc {
             }
         }
     }
+
+
 }
