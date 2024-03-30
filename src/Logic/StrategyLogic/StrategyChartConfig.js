@@ -28,6 +28,7 @@ const plugins = (getNewZooming, updateDatasets, fetchExtraData)=> {
             intersect: false
         },
         zoom: {
+            //limits: globalLimits,
             pan: {
                 enabled: true,
                 mode: 'x',
@@ -60,7 +61,7 @@ const plugins = (getNewZooming, updateDatasets, fetchExtraData)=> {
                             .catch(error => { console.log(error) })
                             .finally(() => { isFetchingData = false; })
                     }
-                }
+                },
             },
             zoom: {
                 pinch: {
@@ -69,7 +70,7 @@ const plugins = (getNewZooming, updateDatasets, fetchExtraData)=> {
                 wheel: {
                     enabled: false
                 },
-                mode: 'x'
+                mode: 'x',
             },
         }
     });
@@ -82,16 +83,12 @@ const scales = (yAxisConfig) => {
             offset: false,
         },
         y: {
-            type: 'linear',
             position: "right",
             beginAtZero: false,
             stackWeight: 3,
             stack: 'demo',
             ticks: {
                 color: "white",
-                callback: function(value) {
-                    return value.toFixed(2);
-                }
             },
             border: {
                 color: "white", width: 2

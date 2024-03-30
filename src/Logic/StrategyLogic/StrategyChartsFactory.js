@@ -1,9 +1,8 @@
-import 'chartjs-adapter-date-fns';
-import 'chartjs-adapter-luxon';
+import { Chart, registerables  } from 'chart.js';
 import { OhlcElement, OhlcController, CandlestickElement, CandlestickController } from 'chartjs-chart-financial';
 import ZoomPlugin from 'chartjs-plugin-zoom';
-import Chart from 'chart.js/auto';
-Chart.register(OhlcElement, OhlcController, CandlestickElement, CandlestickController, ZoomPlugin);
+import 'chartjs-adapter-date-fns';
+Chart.register(...registerables, OhlcElement, OhlcController, CandlestickElement, CandlestickController, ZoomPlugin);
 
 import {StrategyCandleDivider} from "./DataPreprocessingClassses/StrategyCandleDivider.js";
 import {StrategyChartsDatasets} from "./DataPreprocessingClassses/StrategyChartsDatasets.js";
@@ -12,10 +11,12 @@ import {strategyChart} from "./StrategyChartConfig.js";
 import {StrategyChartsSepGraph} from "./DataPreprocessingClassses/StrategyChartsSepGraph.js";
 import {getCurrentTimeInISOFormat, getTimeInISOFormat} from "./Utils/CurrentTimeForJson.js";
 import {StrategyTransmitter} from "./StrategyTransmitter.js";
+import {TimeGapManager} from "./Utils/TimeGapManager.js";
 
 export class StrategyChartsFactory {
     constructor() {
         if (!StrategyChartsFactory.instance) {
+            this.gapManager = new TimeGapManager();
             this.candlesToDisplay = 150;
             this.lastDateInCurrentDataset = null;
             this.firstDateInCurrentDataset = null;
@@ -66,6 +67,7 @@ export class StrategyChartsFactory {
         const datasets = StrategyChartsDatasets.CreateDifferentDatasetsAndPositions(data, graphType);
         let newDatasets = [];
 
+        //console.log(this.gapManager.fillGapsWithNull(chart.data.datasets));
         datasets.forEach(newDataset => {
             chart.data.datasets.forEach(chartDataset => {
                 if (newDataset.label === chartDataset.label) {
