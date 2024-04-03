@@ -41,24 +41,24 @@ const plugins = (getNewZooming, updateDatasets, fetchExtraData)=> {
 
                     if (!isFetchingData && minIndex <= globalLimits.x.min + rangeToTrigger) {
                         isFetchingData = true;
-                        await fetchExtraData(false)
-                            .then(data => {
-                                updateDatasets(chart, data, false);
+                        fetchExtraData(false)
+                            .then(async data => {
+                                await updateDatasets(chart, data, false);
                                 chart.update();
                                 globalLimits = getNewZooming(chart.data.datasets[0].data);
                             })
-                            .catch(error => { console.log(error) })
+                            .catch(error => console.error(error.message))
                             .finally(() => { isFetchingData = false; })
                     }
                     if (!isFetchingData && maxIndex >= globalLimits.x.max - rangeToTrigger) {
                         isFetchingData = true;
-                        await fetchExtraData(true)
-                            .then(data => {
-                                updateDatasets(chart, data, true);
+                        fetchExtraData(true)
+                            .then(async data => {
+                                await updateDatasets(chart, data, true);
                                 chart.update();
                                 globalLimits = getNewZooming(chart.data.datasets[0].data);
                             })
-                            .catch(error => { console.log(error) })
+                            .catch(error => console.error(error.message))
                             .finally(() => { isFetchingData = false; })
                     }
                 },

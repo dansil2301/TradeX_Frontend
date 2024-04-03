@@ -3,6 +3,7 @@ const separateGraph = [
 ]
 
 export class StrategyChartsDatasets {
+
     static candleDatasetCreation(data, graphType) {
         if (graphType === "candle") {
             return ({

@@ -25,14 +25,18 @@ const StrategyChart = ({ candleInterval, strategy, graphType }) => {
     }, [candleInterval, strategy, graphType]);
 
     useEffect(() => {
-        if (chartContainer && chartContainer.current) {
-            const ctx = chartContainer.current.getContext('2d');
-            const chartInstance = chartFactory.createChart(data, ctx, graphType);
+        async function creatChart() {
+            if (chartContainer && chartContainer.current) {
+                const ctx = chartContainer.current.getContext('2d');
+                const chartInstance = await chartFactory.createChart(data, ctx, graphType);
 
-            return () => {
-                chartInstance.destroy();
-            };
+                return () => {
+                    chartInstance.destroy();
+                };
+            }
         }
+
+        creatChart();
     }, [data]);
 
     return (
