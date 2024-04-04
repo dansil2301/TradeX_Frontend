@@ -31,6 +31,7 @@ export class StrategyChartsFactory {
     }
 
     callBack (message, chart, graphType) {
+        console.log(message);
         let candle = StrategyCandleDivider.convertCustomCandlesToChartjs(message.candle);
         let strategies = message.strategyNameParameters;
         const parameterObject = {};
@@ -46,7 +47,7 @@ export class StrategyChartsFactory {
                 if (dataset.data[dataset.data.length - 1].x !== candle.x){
                     dataset.data.push(graphType === "candle" ? candle : {x: candle.x, y: candle.c});
                     if (dataset.data.length > this.candlesToDisplay * 3) {
-                        dataset.data.shift();
+                        //dataset.data.shift();
                     }
                 }
                 else {
@@ -57,7 +58,7 @@ export class StrategyChartsFactory {
                 if (dataset.data[dataset.data.length - 1].x !== candle.x){
                     dataset.data.push({y: parameterObject[dataset.label], x: candle.x});
                     if (dataset.data.length > this.candlesToDisplay * 3) {
-                        dataset.data.shift();
+                        //dataset.data.shift();
                     }
                 }
                 else {
@@ -147,8 +148,9 @@ export class StrategyChartsFactory {
                             tmpNewDataset.data.splice(-(newDatasets.length - this.candlesToDisplay * 3));
                             await this.strategySocketReceiver.disconnect();
                         }
-                        else
-                        { tmpNewDataset.data.splice(0, newDatasets.length - this.candlesToDisplay * 3); }
+                        else {
+                            tmpNewDataset.data.splice(0, tmpNewDataset.data.length - this.candlesToDisplay * 3);
+                        }
                     }
 
                     newDatasets.push(tmpNewDataset);
@@ -156,6 +158,7 @@ export class StrategyChartsFactory {
             }
         }
 
+        console.log(newDatasets[0].data.length, newDatasets[1].data.length, newDatasets[2].data.length)
         this.lastDateInCurrentDataset = newDatasets[0].data[0].x;
         this.firstDateInCurrentDataset = newDatasets[0].data[newDatasets[0].data.length - 1].x;
         chart.data.datasets = newDatasets;
