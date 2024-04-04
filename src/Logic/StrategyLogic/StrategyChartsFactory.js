@@ -97,26 +97,31 @@ export class StrategyChartsFactory {
                 'strategiesNames': strategy,
                 'isToFuture': isToFuture
             };
+            const socketParams = {
+                'figi': 'BBG004730N88',
+                'interval': this.candleInterval,
+                'strategiesNames': this.strategy === "" ? [] : this.strategy.split(","),
+            };
 
             let data;
             await StrategyTransmitter.GetCandlesStrategyFixedPeriodFromAsync(params)
                 .then(res => { data = res })
                 .catch(async () => {
-                    await this.strategySocketReceiver.connectToLiveData(params, (message) => this.callBack(message, this.chart));
+                    await this.strategySocketReceiver.connectToLiveData(socketParams, (message) => this.callBack(message, this.chart));
                 });
             return StrategyCandleDivider.CandlesStrategyDivision(data);
         }
     }
 
     async socketDataFetch(graphType) {
-        const params = {
+        const socketParams = {
             'figi': 'BBG004730N88',
             'interval': this.candleInterval,
             'strategiesNames': this.strategy === "" ? [] : this.strategy.split(","),
         };
 
         if (this.chart !== null) {
-            await this.strategySocketReceiver.connectToLiveData(params, (message) => this.callBack(message, this.chart, graphType));
+            await this.strategySocketReceiver.connectToLiveData(socketParams, (message) => this.callBack(message, this.chart, graphType));
         }
     }
 
