@@ -31,7 +31,6 @@ export class StrategyChartsFactory {
     }
 
     callBack (message, chart, graphType) {
-        console.log(message);
         let candle = StrategyCandleDivider.convertCustomCandlesToChartjs(message.candle);
         let strategies = message.strategyNameParameters;
         const parameterObject = {};
@@ -158,7 +157,6 @@ export class StrategyChartsFactory {
             }
         }
 
-        console.log(newDatasets[0].data.length, newDatasets[1].data.length, newDatasets[2].data.length)
         this.lastDateInCurrentDataset = newDatasets[0].data[0].x;
         this.firstDateInCurrentDataset = newDatasets[0].data[newDatasets[0].data.length - 1].x;
         chart.data.datasets = newDatasets;
