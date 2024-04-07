@@ -32,4 +32,18 @@ export class StrategyCandleDivider {
 
         return {"candles": candles, "strategies": strategyContainer};
     }
+
+    static CandlesSocketStrategyDivision(strategiesParams) {
+        let candle = StrategyCandleDivider.convertCustomCandlesToChartjs(strategiesParams.candle);
+        let strategies = strategiesParams.strategyNameParameters;
+        const strategyContainer = {};
+        strategies.forEach(item => {
+            const parameters = item.parameters;
+            Object.keys(parameters).forEach(parameterName => {
+                strategyContainer[parameterName] = parameters[parameterName];
+            });
+        });
+
+        return {"candles": candle, "strategies": strategyContainer}
+    }
 }

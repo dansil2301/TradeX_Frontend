@@ -1,8 +1,13 @@
-const separateGraph = [
-    'rsi'
-]
+import {separateGraph} from "./separateGraphConfig.js";
 
 export class StrategyChartsDatasets {
+    static GraphTypeCandleChange(candle, graphType) {
+        if (graphType === "candle") {
+            return candle;
+        } else if (graphType === "line") {
+            return {x: candle.x, y: candle.c};
+        }
+    }
 
     static candleDatasetCreation(data, graphType) {
         if (graphType === "candle") {
@@ -12,8 +17,7 @@ export class StrategyChartsDatasets {
                 data: data["candles"],
                 yAxisID: "y",
             });
-        }
-        else if (graphType === "line") {
+        } else if (graphType === "line") {
             return ({
                 label: 'Market data',
                 type: 'line',

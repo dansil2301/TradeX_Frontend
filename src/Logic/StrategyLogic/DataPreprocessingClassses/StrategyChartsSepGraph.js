@@ -1,6 +1,4 @@
-const separateGraph = [
-    'rsi'
-]
+import {separateGraph} from "./separateGraphConfig.js";
 
 export class StrategyChartsSepGraph {
     static GetYAxisConfig(datasets) {

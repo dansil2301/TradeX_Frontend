@@ -15,12 +15,13 @@ const StrategyChart = ({ candleInterval, strategy, graphType }) => {
         const fetchCandlesStrategies = async () => {
             setError(null);
             setLoading(true);
-            chartFactory.fetchInitialData(candleInterval, strategy)
+            chartFactory.fetchInitialData()
                 .then(res => {setData(res);})
                 .catch(error => {setError(error);})
                 .finally(() => setLoading(false));
         };
 
+        chartFactory.setParams(candleInterval, strategy, graphType);
         fetchCandlesStrategies();
     }, [candleInterval, strategy, graphType]);
 

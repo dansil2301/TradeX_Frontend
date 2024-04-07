@@ -10,59 +10,58 @@ import {StrategyChartsDatasets} from "./DataPreprocessingClassses/StrategyCharts
 import {StrategyChartZoomingCalc} from "./DataPreprocessingClassses/StrategyChartZoomingCalc.js";
 import {strategyChart} from "./StrategyChartConfig.js";
 import {StrategyChartsSepGraph} from "./DataPreprocessingClassses/StrategyChartsSepGraph.js";
-import {getCurrentTimeInISOFormat, getTimeInISOFormat} from "./Utils/CurrentTimeForJson.js";
-import {StrategyTransmitter} from "./StrategyTransmitter.js";
 import {StrategySocketReceiver} from "../../ServerReciever/StrategySocketReceiver.js";
+import {StrategyChartDataGetter} from "./StrategyChartDataGetter.js";
 
 export class StrategyChartsFactory {
     constructor() {
         if (!StrategyChartsFactory.instance) {
-            this.chart = null;
             this.strategySocketReceiver = new StrategySocketReceiver();
+            this.strategyChartDataGetter = new StrategyChartDataGetter(this.strategySocketReceiver);
+            this.chart = null;
             this.candlesToDisplay = 150;
+            this.candlesToBeLoadedMax = 450
             this.lastDateInCurrentDataset = null;
             this.firstDateInCurrentDataset = null;
-            this.candleInterval;
-            this.strategy;
             StrategyChartsFactory.instance = this;
         }
 
         return StrategyChartsFactory.instance;
     }
 
-    callBack (message, chart, graphType) {
-        let candle = StrategyCandleDivider.convertCustomCandlesToChartjs(message.candle);
-        let strategies = message.strategyNameParameters;
-        const parameterObject = {};
-        strategies.forEach(item => {
-            const parameters = item.parameters;
-            Object.keys(parameters).forEach(parameterName => {
-                parameterObject[parameterName] = parameters[parameterName];
-            });
-        });
+    setParams(candleInterval, strategy, graphType) {
+        this.strategyChartDataGetter.setParams(candleInterval, strategy, this.candlesToDisplay, graphType);
+    }
+
+    candlePushOrChange(dataset, strategies, candle, graphType, label, isNextCandle) {
+        if (dataset.label === "Market data") {
+            if (isNextCandle)
+                dataset.data.push(StrategyChartsDatasets.GraphTypeCandleChange(candle, graphType));
+            else
+                dataset.data[dataset.data.length - 1] = StrategyChartsDatasets.GraphTypeCandleChange(candle, graphType);
+        } else if (dataset.label in strategies) {
+            if (isNextCandle)
+                dataset.data.push({y: strategies[dataset.label], x: candle.x});
+            else
+                dataset.data[dataset.data.length - 1] = {y: strategies[dataset.label], x: candle.x};
+        }
+    }
+
+    socketDatasetsUpdate (message, chart, graphType) {
+        const formattedMarketData = StrategyCandleDivider.CandlesSocketStrategyDivision(message);
+        let candle = formattedMarketData.candles;
+        let strategies = formattedMarketData.strategies
 
         this.chart.data.datasets.forEach(dataset => {
-            if (dataset.label === "Market data") {
-                if (dataset.data[dataset.data.length - 1].x !== candle.x){
-                    dataset.data.push(graphType === "candle" ? candle : {x: candle.x, y: candle.c});
-                    if (dataset.data.length > this.candlesToDisplay * 3) {
-                        //dataset.data.shift();
-                    }
-                }
-                else {
-                    dataset.data[dataset.data.length - 1] = graphType === "candle" ? candle : {x: candle.x, y: candle.c};
-                }
+            if (dataset.data[dataset.data.length - 1].x !== candle.x) {
+                const isNextCandle = true;
+                this.candlePushOrChange(dataset, strategies, candle, graphType, dataset.label, isNextCandle)
+                if (dataset.data.length > this.candlesToBeLoadedMax)
+                { dataset.data.shift(); }
             }
-            else if (dataset.label in parameterObject) {
-                if (dataset.data[dataset.data.length - 1].x !== candle.x){
-                    dataset.data.push({y: parameterObject[dataset.label], x: candle.x});
-                    if (dataset.data.length > this.candlesToDisplay * 3) {
-                        //dataset.data.shift();
-                    }
-                }
-                else {
-                    dataset.data[dataset.data.length - 1] = {y: parameterObject[dataset.label], x: candle.x};
-                }
+            else {
+                const isNextCandle = false;
+                this.candlePushOrChange(dataset, strategies, candle, graphType, dataset.label, isNextCandle)
             }
         });
 
@@ -71,57 +70,26 @@ export class StrategyChartsFactory {
         }
     }
 
-    async fetchInitialData(candleInterval, strategy) {
+    async fetchInitialData() {
         await this.strategySocketReceiver.disconnect();
-        this.candleInterval = candleInterval;
-        this.strategy = strategy;
-
-        const params = {
-            'from': getCurrentTimeInISOFormat(),
-            'figi': 'BBG004730N88',
-            'interval': candleInterval,
-            'candleLength': this.candlesToDisplay,
-            'strategiesNames': strategy
-        };
-
-        return await StrategyTransmitter.GetCandlesStrategyFixedPeriodFromAsync(params);
+        return await this.strategyChartDataGetter.fetchInitialData();
     }
 
     async fetchExtraData(candleInterval, strategy, isToFuture) {
-        if (!this.isFetchingData) {
-            const params = {
-                'from': isToFuture ? getTimeInISOFormat(this.firstDateInCurrentDataset) : getTimeInISOFormat(this.lastDateInCurrentDataset),
-                'figi': 'BBG004730N88',
-                'interval': candleInterval,
-                'candleLength': this.candlesToDisplay,
-                'strategiesNames': strategy,
-                'isToFuture': isToFuture
-            };
-            const socketParams = {
-                'figi': 'BBG004730N88',
-                'interval': this.candleInterval,
-                'strategiesNames': this.strategy === "" ? [] : this.strategy.split(","),
-            };
-
-            let data;
-            await StrategyTransmitter.GetCandlesStrategyFixedPeriodFromAsync(params)
-                .then(res => { data = res })
-                .catch(async () => {
-                    await this.strategySocketReceiver.connectToLiveData(socketParams, (message) => this.callBack(message, this.chart));
-                });
-            return StrategyCandleDivider.CandlesStrategyDivision(data);
-        }
+        let data;
+        const fromDate = isToFuture ? this.firstDateInCurrentDataset : this.lastDateInCurrentDataset;
+        await this.strategyChartDataGetter.fetchExtraData(fromDate, isToFuture)
+            .then(res => { data = res })
+            .catch(async () => {
+                // if there are no more candles to fetch connect to socket
+                await this.strategyChartDataGetter.socketDataFetch(this.chart, this.socketDatasetsUpdate);
+            });
+        return StrategyCandleDivider.CandlesStrategyDivision(data);
     }
 
-    async socketDataFetch(graphType) {
-        const socketParams = {
-            'figi': 'BBG004730N88',
-            'interval': this.candleInterval,
-            'strategiesNames': this.strategy === "" ? [] : this.strategy.split(","),
-        };
-
+    async socketDataFetch() {
         if (this.chart !== null) {
-            await this.strategySocketReceiver.connectToLiveData(socketParams, (message) => this.callBack(message, this.chart, graphType));
+            await this.strategyChartDataGetter.socketDataFetch(this.chart, this.socketDatasetsUpdate);
         }
     }
 
@@ -129,30 +97,35 @@ export class StrategyChartsFactory {
         return StrategyChartZoomingCalc.GetLimitsOfZooming(data, candlesToDisplay);
     }
 
+    async getNewDataset(receivedDataset, oldDataset, isToFuture) {
+        const tmpDataset = receivedDataset;
+
+        if (!isToFuture) {
+            tmpDataset.data = tmpDataset.data.concat(oldDataset.data);
+            if (receivedDataset.data.length + oldDataset.data.length > this.candlesToBeLoadedMax) {
+                tmpDataset.data.splice(this.candlesToBeLoadedMax);
+                await this.strategySocketReceiver.disconnect(); // as soon is scrolled from socket visibility disconnect
+            }
+        }
+        else {
+            tmpDataset.data = oldDataset.data.concat(tmpDataset.data)
+            if (receivedDataset.data.length + oldDataset.data.length > this.candlesToBeLoadedMax) {
+                tmpDataset.data.splice(0, tmpDataset.data.length - this.candlesToBeLoadedMax);
+            }
+        }
+
+        return tmpDataset
+    }
+
     async updateDatasets(chart, data, isToFuture, graphType) {
-        const datasets = StrategyChartsDatasets.CreateDifferentDatasetsAndPositions(data, graphType);
+        const receivedDatasets = StrategyChartsDatasets.CreateDifferentDatasetsAndPositions(data, graphType);
         let newDatasets = [];
 
-        for (const newDataset of datasets) {
+        for (const receivedDataset of receivedDatasets) {
             for (const chartDataset of chart.data.datasets) {
-                if (newDataset.label === chartDataset.label) {
-                    const tmpNewDataset = newDataset;
-                    if (!isToFuture)
-                    { tmpNewDataset.data = tmpNewDataset.data.concat(chartDataset.data); }
-                    else
-                    { tmpNewDataset.data = chartDataset.data.concat(tmpNewDataset.data) }
-
-                    if (tmpNewDataset.data.length > this.candlesToDisplay * 3) { // more than 3 screens of data are loaded
-                        if (!isToFuture) {
-                            tmpNewDataset.data.splice(-(newDatasets.length - this.candlesToDisplay * 3));
-                            await this.strategySocketReceiver.disconnect();
-                        }
-                        else {
-                            tmpNewDataset.data.splice(0, tmpNewDataset.data.length - this.candlesToDisplay * 3);
-                        }
-                    }
-
-                    newDatasets.push(tmpNewDataset);
+                if (receivedDataset.label === chartDataset.label) {
+                    const tmpDataset = await this.getNewDataset(receivedDataset, chartDataset, isToFuture);
+                    newDatasets.push(tmpDataset);
                 }
             }
         }
@@ -179,3 +152,26 @@ export class StrategyChartsFactory {
         return this.chart;
     }
 }
+
+// if (dataset.label === "Market data") {
+//     if (dataset.data[dataset.data.length - 1].x !== candle.x){
+//         dataset.data.push(graphType === "candle" ? candle : {x: candle.x, y: candle.c});
+//         if (dataset.data.length > this.candlesToBeLoadedMax) {
+//             dataset.data.shift();
+//         }
+//     }
+//     else {
+//         dataset.data[dataset.data.length - 1] = graphType === "candle" ? candle : {x: candle.x, y: candle.c};
+//     }
+// }
+// else if (dataset.label in strategies) {
+//     if (dataset.data[dataset.data.length - 1].x !== candle.x){
+//         dataset.data.push({y: strategies[dataset.label], x: candle.x});
+//         if (dataset.data.length > this.candlesToBeLoadedMax) {
+//             dataset.data.shift();
+//         }
+//     }
+//     else {
+//         dataset.data[dataset.data.length - 1] = {y: strategies[dataset.label], x: candle.x};
+//     }
+// }

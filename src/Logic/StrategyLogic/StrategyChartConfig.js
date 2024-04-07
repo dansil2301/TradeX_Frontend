@@ -41,24 +41,12 @@ const plugins = (getNewZooming, updateDatasets, fetchExtraData)=> {
 
                     if (!isFetchingData && minIndex <= globalLimits.x.min + rangeToTrigger) {
                         isFetchingData = true;
-                        fetchExtraData(false)
-                            .then(async data => {
-                                await updateDatasets(chart, data, false);
-                                chart.update();
-                                globalLimits = getNewZooming(chart.data.datasets[0].data);
-                            })
-                            .catch(error => console.error(error.message))
+                        updateChartData(fetchExtraData, updateDatasets, getNewZooming, chart, false)
                             .finally(() => { isFetchingData = false; })
                     }
                     if (!isFetchingData && maxIndex >= globalLimits.x.max - rangeToTrigger) {
                         isFetchingData = true;
-                        fetchExtraData(true)
-                            .then(async data => {
-                                await updateDatasets(chart, data, true);
-                                chart.update();
-                                globalLimits = getNewZooming(chart.data.datasets[0].data);
-                            })
-                            .catch(error => console.error(error.message))
+                        updateChartData(fetchExtraData, updateDatasets, getNewZooming, chart, true)
                             .finally(() => { isFetchingData = false; })
                     }
                 },
@@ -102,4 +90,16 @@ const scales = (yAxisConfig) => {
         },
         ...yAxisConfig,
     });
+}
+
+// functions related to chart logic only
+
+function updateChartData(fetchExtraData, updateDatasets, getNewZooming, chart, isToFuture) {
+    return fetchExtraData(isToFuture)
+        .then(async data => {
+            await updateDatasets(chart, data, isToFuture);
+            chart.update();
+            globalLimits = getNewZooming(chart.data.datasets[0].data);
+        })
+        .catch(error => console.error(error.message))
 }
