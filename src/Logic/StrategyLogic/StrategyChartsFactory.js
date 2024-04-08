@@ -47,21 +47,21 @@ export class StrategyChartsFactory {
         }
     }
 
-    socketDatasetsUpdate (message, chart, graphType) {
+    socketDatasetsUpdate (message, chart, graphType, candlesToBeLoadedMax, candlePushOrChange) {
         const formattedMarketData = StrategyCandleDivider.CandlesSocketStrategyDivision(message);
         let candle = formattedMarketData.candles;
         let strategies = formattedMarketData.strategies
 
-        this.chart.data.datasets.forEach(dataset => {
+        chart.data.datasets.forEach(dataset => {
             if (dataset.data[dataset.data.length - 1].x !== candle.x) {
                 const isNextCandle = true;
-                this.candlePushOrChange(dataset, strategies, candle, graphType, dataset.label, isNextCandle)
-                if (dataset.data.length > this.candlesToBeLoadedMax)
+                candlePushOrChange(dataset, strategies, candle, graphType, dataset.label, isNextCandle)
+                if (dataset.data.length > candlesToBeLoadedMax)
                 { dataset.data.shift(); }
             }
             else {
                 const isNextCandle = false;
-                this.candlePushOrChange(dataset, strategies, candle, graphType, dataset.label, isNextCandle)
+                candlePushOrChange(dataset, strategies, candle, graphType, dataset.label, isNextCandle)
             }
         });
 
@@ -82,14 +82,14 @@ export class StrategyChartsFactory {
             .then(res => { data = res })
             .catch(async () => {
                 // if there are no more candles to fetch connect to socket
-                await this.strategyChartDataGetter.socketDataFetch(this.chart, this.socketDatasetsUpdate);
+                await this.strategyChartDataGetter.socketDataFetch(this.chart, this.candlesToBeLoadedMax, this.socketDatasetsUpdate, this.candlePushOrChange);
             });
         return StrategyCandleDivider.CandlesStrategyDivision(data);
     }
 
     async socketDataFetch() {
         if (this.chart !== null) {
-            await this.strategyChartDataGetter.socketDataFetch(this.chart, this.socketDatasetsUpdate);
+            await this.strategyChartDataGetter.socketDataFetch(this.chart, this.candlesToBeLoadedMax, this.socketDatasetsUpdate, this.candlePushOrChange);
         }
     }
 

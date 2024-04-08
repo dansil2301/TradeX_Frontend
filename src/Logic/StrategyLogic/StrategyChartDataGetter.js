@@ -43,13 +43,13 @@ export class StrategyChartDataGetter {
         return await StrategyTransmitter.GetCandlesStrategyFixedPeriodFromAsync(params);
     }
 
-    async socketDataFetch(chart, callBack) {
+    async socketDataFetch(chart, candlesToBeLoadedMax, callBack, candlePushOrChange) {
         const socketParams = {
             'figi': this.figi,
             'interval': this.candleInterval,
             'strategiesNames': this.strategy === "" ? [] : this.strategy.split(","),
         };
 
-        await this.strategySocketReceiver.connectToLiveData(socketParams, (message) => callBack(message, chart, this.graphType));
+        await this.strategySocketReceiver.connectToLiveData(socketParams, (message) => callBack(message, chart, this.graphType, candlesToBeLoadedMax, candlePushOrChange));
     }
 }
