@@ -1,0 +1,16 @@
+.IntroductionText {
+    margin-top: 100px;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.MainIntroText {
+    font-size: 64px;
+    margin-bottom: 30px;
+}
+
+.SubMainIntoText {
+    font-size: 40px;
+}

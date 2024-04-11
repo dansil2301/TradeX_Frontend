@@ -1,0 +1,7 @@
+.StarterBlock {
+    display: flex;
+    width: 700px;
+    margin-left: 60px;
+    justify-content: flex-start;
+    flex-direction: column;
+}
