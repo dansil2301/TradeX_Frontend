@@ -6,7 +6,7 @@ import store from "../ConfigRedux/Terminal/Reducers.js";
 export function TerminalPage() {
     return (
         <Provider store={store}>
-            <div className="TerminalBody" style={{height: '98vh'}}>
+            <div className="TerminalBody" style={{ height: 'calc(100vh - 20px)'}}>
                 <TerminalHeader />
                 <ConnectedTerminalMain />
             </div>

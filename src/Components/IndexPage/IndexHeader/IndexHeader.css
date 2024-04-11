@@ -1,11 +1,7 @@
-.terminalHeader {
+.indexHeader {
     display: flex;
     align-items: center;
     height: 100px;
     font-family: Roboto, serif !important;
     font-size: 17px !important;
-}
-
-.EyeContainer {
-    margin-left: 0 !important;
 }
