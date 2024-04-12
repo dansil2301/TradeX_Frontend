@@ -1,6 +1,6 @@
 .EyeContainer {
-    margin-left: auto;
-    margin-right: 60px;
+    position: absolute;
+    right: 70px;
 }
 
 .EyeImg {

@@ -12,10 +12,6 @@ export class EyeMovementLogic {
     drawinStep;
 
     constructor(canvas, ctx) {
-        if (EyeMovementLogic.#instance) {
-            return EyeMovementLogic.#instance;
-        }
-
         this.canvas = canvas;
         this.ctx = ctx;
         this.eyeLidPos = 0;
@@ -237,7 +233,6 @@ export class EyeMovementLogic {
         const parabolaXEdge = prevParabolaXedge - 13;
 
         xCoef = (-b * 0.4 + parabolaYEdge) / (parabolaStartPrevX + parabolaXEdge)**2;
-
         return {parabolaXEdge, parabolaYEdge, parabolaStartPrevX, xCoef};
     }
 
