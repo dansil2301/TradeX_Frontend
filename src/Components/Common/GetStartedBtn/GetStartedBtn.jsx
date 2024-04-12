@@ -1,11 +1,12 @@
 import "./GetStartedBtn.css"
+import {Link} from "react-router-dom";
 
-export function GetStartedBtn() {
+export function GetStartedBtn({ to }) {
     return (
-        <button className="getStartedBtn">
+        <Link to={to} className="getStartedBtn">
             <span className="getStartedBtnText">
                 Get started
             </span>
-        </button>
+        </Link>
     )
 }

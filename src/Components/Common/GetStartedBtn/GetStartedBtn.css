@@ -7,9 +7,12 @@
     border: none;
     font-size: 30px;
     color: #E2E2E2;
-    justify-self: flex-start;
     background: linear-gradient(to right, #4D637C, #9253AF);
     transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
 }
 
 .getStartedBtn::after {

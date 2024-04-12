@@ -1,0 +1,54 @@
+.OptionBlock {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: 'Roboto', sans-serif;
+    color: white;
+    height: 75%;
+    width: 350px;
+    background-color: #2E2E2E;
+    border-color: #666666;
+    border-width: 1px;
+    border-style: solid;
+    border-radius: 20px;
+    margin-right: 20px;
+    margin-left: 20px;
+    transition: transform 0.2s ease;
+}
+
+.OptionBlock:hover {
+    transform: scale(0.98);
+}
+
+.OptionHeader {
+    margin-top: 20px;
+    font-size: 40px;
+    opacity: 1;
+}
+
+.OptionPrice {
+    margin-top: 40px;
+    margin-bottom: -70px;
+    font-size: 35px;
+}
+
+.OptionMonthText {
+    font-size: 24px;
+    color: #A5A5A5;
+}
+
+.OptionFeatures {
+    display: flex;
+    flex-direction: column;
+    font-size: 30px;
+    width: 80%;
+    margin-top: 30px;
+}
+
+.OptionIncludeIndicator {
+    margin-right: 30px;
+}
+
+.OptionFeature {
+    margin-bottom: 40px;
+}
