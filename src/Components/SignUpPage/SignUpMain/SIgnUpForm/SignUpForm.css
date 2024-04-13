@@ -1,0 +1,79 @@
+.SignUpFormContainer {
+    display: flex;
+    justify-content: center;
+    width: 380px;
+    border-radius: 10px;
+    background-color: #2E2E2E;
+}
+
+.SignUpForm {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 32px;
+    font-family: Roboto, serif;
+    width: 100%;
+}
+
+.SignUpHeader {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.form-group {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+    width: 100%;
+}
+
+.customInput {
+    display: flex;
+    justify-content: center;
+    color: white;
+    background-color: #7B7B7B;
+    height: 37px;
+    border-style: none;
+    border-radius: 15px;
+    width: 60%;
+    text-indent: 5px;
+}
+
+::placeholder {
+    color: white;
+    text-indent: 5px;
+    font-size: 15px;
+}
+
+.SignUpSubmit {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 5px;
+    margin-bottom: 7px;
+    border-radius: 10px;
+    border-style: none;
+    height: 30px;
+    width: 90px;
+    background-color: #595959;
+    font-size: 13px;
+    color: white;
+    text-decoration: none;
+    transition: background-color 0.2s ease;
+}
+
+.SignUpSubmit:hover {
+    background-color: #696969;
+}
+
+.SignInLnk {
+    margin-bottom: 15px;
+    font-size: 11px;
+    color: #7AAFFF;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.SignInLnk:hover {
+    color: #5398ff;
+}
