@@ -1,9 +1,10 @@
 import "./SignIn.css"
+import {Link} from "react-router-dom";
 
 export function SignIn() {
     return (
-        <button className="signIn">
+        <Link className="signIn" to="/sign-in">
             Sign in
-        </button>
+        </Link>
     );
 }

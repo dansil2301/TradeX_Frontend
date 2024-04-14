@@ -1,5 +1,6 @@
 import {Link} from "react-router-dom";
 import {useState} from "react";
+import {TraderToken} from "../../../../Logic/TraderToken.js";
 
 const useSubmit = (initialState, onSubmit) => {
     const [formData, setFormData] = useState(initialState);
@@ -26,11 +27,12 @@ const useSubmit = (initialState, onSubmit) => {
 
 export function SignInForm() {
     const { formData, handleChange, handleSubmit } = useSubmit({
-        usernameEmail: '',
+        email: '',
         password: '',
     }, (data) => {
-        // Handle form submission
-        console.log(data);
+        TraderToken.getAndSaveToken(data.email, data.password)
+            .then((token) => { TraderToken.saveToken(token); })
+            .catch((error) => { console.log(error); })
     });
 
     return (
@@ -38,8 +40,8 @@ export function SignInForm() {
             <form className="SignUpForm" onSubmit={handleSubmit}>
                 <span className="SignUpHeader">Sign in</span>
                 <div className="form-group">
-                    <input className="customInput" type="text" id="usernameEmail" name="usernameEmail" value={formData.username}
-                           onChange={handleChange} placeholder="Username or email"/>
+                    <input className="customInput" type="text" id="email" name="email" value={formData.username}
+                           onChange={handleChange} placeholder="Email"/>
                 </div>
                 <div className="form-group">
                     <input className="customInput" type="password" id="password" name="password"

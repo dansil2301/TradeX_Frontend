@@ -13,6 +13,9 @@
     border-radius: 5px;
     position: relative;
     right: 170px;
+    text-decoration: none;
+    color: white;
+    font-size: 15px;
 }
 
 .signIn:hover {
