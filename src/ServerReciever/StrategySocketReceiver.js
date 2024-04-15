@@ -1,6 +1,7 @@
 import SockJS from "sockjs-client";
 import {Stomp} from "@stomp/stompjs";
 import {TraderToken} from "../Logic/TraderToken.js";
+import MainServeURL from "../../config.js";
 
 export class StrategySocketReceiver {
     constructor() {
@@ -14,17 +15,18 @@ export class StrategySocketReceiver {
             return;
         }
 
-        const socket = new SockJS('http://localhost:8080/live-data');
+        const socket = new SockJS(MainServeURL + 'live-data');
         this.stompClient = Stomp.over(socket);
-        const headers = { 'Authorization': `Bearer ${TraderToken.getToken()}` };
 
-        this.stompClient.connect({}, () => {
+        this.stompClient.connect({Authorization: `Bearer ${TraderToken.getToken()}`}, () => {
             this.isConnected = true;
-            this.stompClient.send('/app/start-live-data', { headers: headers }, JSON.stringify(params));
+            console.log("Connected to live data.");
 
             this.stompClient.subscribe('/topic/live-data-message', function(message) {
                 callBackFunction(JSON.parse(message.body));
             });
+        }, (error) => {
+            console.error("Error connecting to live data:", error);
         });
     }
 

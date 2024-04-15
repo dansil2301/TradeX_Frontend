@@ -152,26 +152,3 @@ export class StrategyChartsFactory {
         return this.chart;
     }
 }
-
-// if (dataset.label === "Market data") {
-//     if (dataset.data[dataset.data.length - 1].x !== candle.x){
-//         dataset.data.push(graphType === "candle" ? candle : {x: candle.x, y: candle.c});
-//         if (dataset.data.length > this.candlesToBeLoadedMax) {
-//             dataset.data.shift();
-//         }
-//     }
-//     else {
-//         dataset.data[dataset.data.length - 1] = graphType === "candle" ? candle : {x: candle.x, y: candle.c};
-//     }
-// }
-// else if (dataset.label in strategies) {
-//     if (dataset.data[dataset.data.length - 1].x !== candle.x){
-//         dataset.data.push({y: strategies[dataset.label], x: candle.x});
-//         if (dataset.data.length > this.candlesToBeLoadedMax) {
-//             dataset.data.shift();
-//         }
-//     }
-//     else {
-//         dataset.data[dataset.data.length - 1] = {y: strategies[dataset.label], x: candle.x};
-//     }
-// }
