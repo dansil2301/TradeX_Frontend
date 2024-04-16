@@ -5,3 +5,22 @@
     font-family: Roboto, serif !important;
     font-size: 17px !important;
 }
+
+.LoggedIn {
+    display: flex;
+    margin-left: auto;
+    margin-right: 20px;
+    height: 40px;
+    width: 100px;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    background-color: #595959;
+    border: none;
+    border-radius: 5px;
+    position: relative;
+    right: 170px;
+    text-decoration: none;
+    color: white;
+    font-size: 15px;
+}
