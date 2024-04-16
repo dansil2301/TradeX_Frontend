@@ -1,6 +1,9 @@
 import "./SignUpForm.css"
 import {useState} from "react";
-import {Link} from "react-router-dom";
+import {Link, useLocation, useNavigate} from "react-router-dom";
+import {PasswordChecker} from "../../../../Logic/TraderLogic/PasswordChecker.js";
+import {TraderTransmitter} from "../../../../Logic/TraderLogic/TraderTransmitter.js";
+import {EmailChecker} from "../../../../Logic/TraderLogic/EmailChecker.js";
 
 const useSubmit = (initialState, onSubmit) => {
     const [formData, setFormData] = useState(initialState);
@@ -26,13 +29,40 @@ const useSubmit = (initialState, onSubmit) => {
 };
 
 export function SignUpForm() {
+    const navigate = useNavigate();
+    const [errorText, setErrorText] = useState(null)
+
+    const location = useLocation();
+    const queryParams = new URLSearchParams(location.search);
+    let status = queryParams.get('status');
+    if (status === null) { status = "TRADER_BASIC"; }
+
     const { formData, handleChange, handleSubmit } = useSubmit({
         username: '',
         email: '',
         password: '',
         confirmPassword: ''
     }, (data) => {
-        // Handle form submission
+        if (!data.username) {
+            setErrorText("Username can't be empty")
+        }
+        else if (!EmailChecker.isEmailCorrect(data.email)) {
+            setErrorText("Email is not valid or empty")
+        }
+        else if (!PasswordChecker.isPasswordLongEnough(data.password)) {
+            setErrorText("Password should be more than 9 symbols");
+        }
+        else if (!PasswordChecker.isPasswordStrong(data.password)) {
+            setErrorText("Password should contain: upper case letters, numbers and special symbols")
+        }
+        else if (!PasswordChecker.isPasswordConfirmed(data.password, data.confirmPassword)) {
+            setErrorText("Passwords are not matching")
+        }
+        else {
+            TraderTransmitter.CreateTrader(data.username, data.email, data.password, status)
+                .then(() => navigate("/sign-in"))
+                .catch((error) => setErrorText(error.message));
+        }
         console.log(data);
     });
 
@@ -40,6 +70,7 @@ export function SignUpForm() {
         <div className="SignUpFormContainer">
             <form className="SignUpForm" onSubmit={handleSubmit}>
                 <span className="SignUpHeader">Sign up</span>
+                {errorText && <span className="showError">{errorText}</span>}
                 <div className="form-group">
                     <input className="customInput" type="text" id="username" name="username" value={formData.username} onChange={handleChange} placeholder="Username" />
                 </div>

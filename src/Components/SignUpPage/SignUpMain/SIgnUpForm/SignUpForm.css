@@ -77,3 +77,10 @@
 .SignInLnk:hover {
     color: #5398ff;
 }
+
+.showError {
+    font-size: 12px;
+    color: #FF5880;
+    text-decoration: none;
+    text-align: center;
+}

@@ -14,4 +14,17 @@ export class TraderReceiver {
                 });
         });
     }
+
+    static CreateTrader(params) {
+        const API_URL = MainServeURL + "api/traders";
+        return new Promise((resolve, reject) => {
+            axios.post(API_URL, params)
+                .then(response => {
+                    resolve(response.data.accessToken);
+                })
+                .catch(error => {
+                    reject(error);
+                });
+        });
+    }
 }

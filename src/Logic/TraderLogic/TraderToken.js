@@ -1,4 +1,4 @@
-import {TraderReceiver} from "../ServerReciever/TraderReceiver.js";
+import {TraderReceiver} from "../../ServerReciever/TraderReceiver.js";
 
 export class TraderToken {
     static getAndSaveToken(email, password) {

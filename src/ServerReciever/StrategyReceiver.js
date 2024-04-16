@@ -1,6 +1,6 @@
 import axios from "axios";
 import MainServeURL from "../../config.js";
-import {TraderToken} from "../Logic/TraderToken.js";
+import {TraderToken} from "../Logic/TraderLogic/TraderToken.js";
 
 export class StrategyReceiver {
     static async GetStrategiesNamesAsync() {

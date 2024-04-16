@@ -1,6 +1,6 @@
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {useState} from "react";
-import {TraderToken} from "../../../../Logic/TraderToken.js";
+import {TraderToken} from "../../../../Logic/TraderLogic/TraderToken.js";
 
 const useSubmit = (initialState, onSubmit) => {
     const [formData, setFormData] = useState(initialState);
@@ -26,19 +26,23 @@ const useSubmit = (initialState, onSubmit) => {
 };
 
 export function SignInForm() {
+    const navigate = useNavigate();
+    const [errorText, setErrorText] = useState(null)
+
     const { formData, handleChange, handleSubmit } = useSubmit({
         email: '',
         password: '',
     }, (data) => {
         TraderToken.getAndSaveToken(data.email, data.password)
-            .then((token) => { TraderToken.saveToken(token); })
-            .catch((error) => { console.log(error); })
+            .then((token) => { TraderToken.saveToken(token); navigate("/terminal") })
+            .catch((error) => { setErrorText(error.message); })
     });
 
     return (
         <div className="SignUpFormContainer">
             <form className="SignUpForm" onSubmit={handleSubmit}>
                 <span className="SignUpHeader">Sign in</span>
+                {errorText && <span className="showError">{errorText}</span>}
                 <div className="form-group">
                     <input className="customInput" type="text" id="email" name="email" value={formData.username}
                            onChange={handleChange} placeholder="Email"/>

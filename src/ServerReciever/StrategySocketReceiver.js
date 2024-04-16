@@ -1,6 +1,6 @@
 import SockJS from "sockjs-client";
 import {Stomp} from "@stomp/stompjs";
-import {TraderToken} from "../Logic/TraderToken.js";
+import {TraderToken} from "../Logic/TraderLogic/TraderToken.js";
 import MainServeURL from "../../config.js";
 
 export class StrategySocketReceiver {
