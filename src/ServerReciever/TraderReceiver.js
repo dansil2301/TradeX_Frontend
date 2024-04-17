@@ -1,5 +1,6 @@
 import MainServeURL from "../../config.js";
 import axios from "axios";
+import {TraderToken} from "../Logic/TraderLogic/TraderToken.js";
 
 export class TraderReceiver {
     static GetAccessToken(params) {
@@ -21,6 +22,21 @@ export class TraderReceiver {
             axios.post(API_URL, params)
                 .then(response => {
                     resolve(response.data.accessToken);
+                })
+                .catch(error => {
+                    reject(error);
+                });
+        });
+    }
+
+    static GetTraderById(id) {
+        const API_URL = MainServeURL + `api/traders/${id}`;
+        return new Promise((resolve, reject) => {
+            axios.get(API_URL, {
+                headers: {'Authorization': `Bearer ${TraderToken.getToken()}`}
+            })
+                .then(response => {
+                    resolve(response.data);
                 })
                 .catch(error => {
                     reject(error);

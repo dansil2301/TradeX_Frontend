@@ -11,4 +11,8 @@ export class TraderTransmitter {
 
         return await TraderReceiver.CreateTrader(params);
     }
+
+    static async GetTraderById(id) {
+        return await TraderReceiver.GetTraderById(id);
+    }
 }

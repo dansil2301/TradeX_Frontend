@@ -4,7 +4,7 @@ import {TraderToken} from "../../../../../Logic/TraderLogic/TraderToken.js";
 export function SignOutBtn() {
     const handleSignOut = () => {
         TraderToken.clearToken();
-        //window.location.reload();
+        window.location.reload();
     };
 
     return (
