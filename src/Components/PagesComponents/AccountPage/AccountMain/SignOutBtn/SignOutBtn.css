@@ -1,0 +1,20 @@
+.SignOut {
+    display: flex;
+    height: 40px;
+    width: 150px;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    transition: background-color 0.2s;
+    background-color: #595959;
+    border: none;
+    border-radius: 20px;
+    text-decoration: none;
+    color: white;
+    font-size: 25px;
+    font-family: Roboto, serif;
+}
+
+.SignOut:hover {
+    background-color: #818181;
+}

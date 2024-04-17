@@ -3,11 +3,11 @@ import "./StrategiesElement.css"
 import {useEffect, useState} from "react";
 import {DropdownOption} from "../DropdownOption/DropdownOption.jsx";
 
-import StrategyLogo from "../../../../../assets/StrategyLogo.png"
-import {Arrow} from "../../../../Common/Arrow/Arrow.jsx";
-import Loading from "../../../../Common/Loading/Loading.jsx";
-import {StrategyTransmitter} from "../../../../../Logic/StrategyLogic/StrategyTransmitter.js";
-import { setStrategy } from '../../../../../ConfigRedux/Terminal/Actions.js';
+import StrategyLogo from "../../../../../../assets/StrategyLogo.png"
+import {Arrow} from "../../../../../Common/Arrow/Arrow.jsx";
+import Loading from "../../../../../Common/Loading/Loading.jsx";
+import {StrategyTransmitter} from "../../../../../../Logic/StrategyLogic/StrategyTransmitter.js";
+import { setStrategy } from '../../../../../../ConfigRedux/Terminal/Actions.js';
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
 

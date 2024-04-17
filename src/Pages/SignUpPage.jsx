@@ -1,5 +1,5 @@
-import {TraderOptionsHeader} from "../Components/TraderOptionsPage/TraderOptionsHeader/TraderOptionsHeader.jsx";
-import {SignUpMain} from "../Components/SignUpPage/SignUpMain/SignUpMain.jsx";
+import {TraderOptionsHeader} from "../Components/PagesComponents/TraderOptionsPage/TraderOptionsHeader/TraderOptionsHeader.jsx";
+import {SignUpMain} from "../Components/PagesComponents/SignUpPage/SignUpMain/SignUpMain.jsx";
 import {useNavigate} from "react-router-dom";
 import {useEffect} from "react";
 import {TraderToken} from "../Logic/TraderLogic/TraderToken.js";

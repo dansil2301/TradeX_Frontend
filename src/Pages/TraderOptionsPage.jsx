@@ -1,6 +1,6 @@
-import {BackgroundImgOptions} from "../Components/TraderOptionsPage/BackgroundImg/BackgroundImgOptions.jsx";
-import {TraderOptionsHeader} from "../Components/TraderOptionsPage/TraderOptionsHeader/TraderOptionsHeader.jsx";
-import {OptionsMain} from "../Components/TraderOptionsPage/TraderOptionsMain/OptionsMain.jsx";
+import {BackgroundImgOptions} from "../Components/PagesComponents/TraderOptionsPage/BackgroundImg/BackgroundImgOptions.jsx";
+import {TraderOptionsHeader} from "../Components/PagesComponents/TraderOptionsPage/TraderOptionsHeader/TraderOptionsHeader.jsx";
+import {OptionsMain} from "../Components/PagesComponents/TraderOptionsPage/TraderOptionsMain/OptionsMain.jsx";
 
 
 export function TraderOptionsPage() {

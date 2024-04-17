@@ -1,0 +1,47 @@
+.AccountMain {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    opacity: 0.9;
+    margin-top: 50px;
+}
+
+.accountHeader {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 25px;
+    font-family: Roboto, serif;
+    width: 80%;
+    font-weight: normal;
+}
+
+.accountHeaderText {
+    font-weight: normal;
+    font-family: Roboto, serif;
+    font-size: 35px;
+    color: white;
+}
+
+.lineDelimiter {
+    background: #B8B8B8;
+    height: 1px;
+    width: 80%;
+}
+
+.PersonalInformation {
+    font-family: Roboto, serif;
+    font-size: 40px;
+    color: white;
+    font-weight: normal;
+    width: 80%;
+}
+
+.PersonalInformationBlocks {
+    margin-top: 80px;
+    width: 70%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 50px;
+}

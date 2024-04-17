@@ -1,7 +1,7 @@
 import "./OptionBlock.css"
-import YES from "../../../../assets/TraderOptions/FeaturesYesNo/YES.png"
-import NO from "../../../../assets/TraderOptions/FeaturesYesNo/NO.png"
-import {GetStartedBtn} from "../../../Common/GetStartedBtn/GetStartedBtn.jsx";
+import YES from "../../../../../assets/TraderOptions/FeaturesYesNo/YES.png"
+import NO from "../../../../../assets/TraderOptions/FeaturesYesNo/NO.png"
+import {GetStartedBtn} from "../../../../Common/GetStartedBtn/GetStartedBtn.jsx";
 
 const trader_status = {
     BASIC: "TRADER_BASIC",

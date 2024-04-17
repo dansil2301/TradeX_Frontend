@@ -1,9 +1,9 @@
 import "./SignUpForm.css"
 import {useState} from "react";
 import {Link, useLocation, useNavigate} from "react-router-dom";
-import {PasswordChecker} from "../../../../Logic/TraderLogic/PasswordChecker.js";
-import {TraderTransmitter} from "../../../../Logic/TraderLogic/TraderTransmitter.js";
-import {EmailChecker} from "../../../../Logic/TraderLogic/EmailChecker.js";
+import {PasswordChecker} from "../../../../../Logic/TraderLogic/PasswordChecker.js";
+import {TraderTransmitter} from "../../../../../Logic/TraderLogic/TraderTransmitter.js";
+import {EmailChecker} from "../../../../../Logic/TraderLogic/EmailChecker.js";
 
 const useSubmit = (initialState, onSubmit) => {
     const [formData, setFormData] = useState(initialState);
