@@ -6,6 +6,7 @@ import {IndexPage} from "./Pages/IndexPage.jsx";
 import {TraderOptionsPage} from "./Pages/TraderOptionsPage.jsx";
 import {SignUpPage} from "./Pages/SignUpPage.jsx";
 import {SignInPage} from "./Pages/SignInPage.jsx";
+import {AccountPage} from "./Pages/AccountPage.jsx";
 
 function App() {
     return (
@@ -14,6 +15,7 @@ function App() {
                 <Routes>
                     <Route path="/" element={<IndexPage />} />
                     <Route path="/terminal" element={<TerminalPage />} />
+                    <Route path="/account" element={<AccountPage />} />
                     <Route path="/trader-options" element={<TraderOptionsPage />} />
                     <Route path="/sign-up" element={<SignUpPage />} />
                     <Route path="/sign-in" element={<SignInPage />} />

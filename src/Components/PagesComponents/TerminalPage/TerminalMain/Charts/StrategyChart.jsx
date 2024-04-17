@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import {StrategyChartsFactory} from "../../../../Logic/StrategyLogic/StrategyChartsFactory.js";
 import {connect} from "react-redux";
 import Loading from "../../../Common/Loading/Loading.jsx";
+import {SignIn} from "../../../Common/SignIn/SignIn.jsx";
 
 const StrategyChart = ({ candleInterval, strategy, graphType }) => {
     const chartFactory = new StrategyChartsFactory();
@@ -45,6 +46,8 @@ const StrategyChart = ({ candleInterval, strategy, graphType }) => {
             {
                 loading ? (
                     <Loading />
+                ) : error && error.message.includes('401') ? (
+                    <div className="SignInTerminalCentering"> <SignIn /> </div>
                 ) : error ? (
                     <div className="Error">Error: {error.message}</div>
                 ) : (
@@ -69,3 +72,11 @@ const mapStateToProps = (state) => ({
 
 const ConnectedStrategyChart = connect(mapStateToProps)(StrategyChart);
 export default ConnectedStrategyChart;
+
+// {error && error.message.includes('401') ? (
+//     <div className="SignInTerminalCentering"> <SignIn /> </div>
+// ) : error ? (
+//     <div className="Error">Error: {error.message}</div>
+// ) : (
+//     <canvas ref={chartContainer} />
+// )}

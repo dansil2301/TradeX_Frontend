@@ -1,6 +1,6 @@
 import {Link, useNavigate} from "react-router-dom";
 import {useState} from "react";
-import {TraderToken} from "../../../../Logic/TraderLogic/TraderToken.js";
+import {TraderToken} from "../../../../../Logic/TraderLogic/TraderToken.js";
 
 const useSubmit = (initialState, onSubmit) => {
     const [formData, setFormData] = useState(initialState);

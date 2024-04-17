@@ -1,8 +1,8 @@
 import "./StarterBlock.css"
 import {IntroductionText} from "./IntroductionText/IntroductionText.jsx";
-import {GetStartedBtn} from "../../../Common/GetStartedBtn/GetStartedBtn.jsx";
+import {GetStartedBtn} from "../../../../Common/GetStartedBtn/GetStartedBtn.jsx";
 import {useEffect, useState} from "react";
-import {TraderToken} from "../../../../Logic/TraderLogic/TraderToken.js";
+import {TraderToken} from "../../../../../Logic/TraderLogic/TraderToken.js";
 
 export function StarterBlock() {
     const [isValid, setIsValid] = useState(false);
