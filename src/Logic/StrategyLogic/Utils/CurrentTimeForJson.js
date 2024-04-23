@@ -1,4 +1,4 @@
-function converter(date) {
+export function dateConverter(date) {
     let year = date.getUTCFullYear();
     let month = ('0' + (date.getUTCMonth() + 1)).slice(-2);
     let day = ('0' + date.getUTCDate()).slice(-2);
@@ -11,10 +11,10 @@ function converter(date) {
 
 export function getCurrentTimeInISOFormat() {
     let now = new Date();
-    return converter(now);
+    return dateConverter(now);
 }
 
 export function getTimeInISOFormat(time) {
     let date = new Date(time);
-    return converter(date);
+    return dateConverter(date);
 }

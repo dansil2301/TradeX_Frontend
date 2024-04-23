@@ -1,7 +1,7 @@
 import "../TerminalControlPanel.css"
 import "./StrategiesElement.css"
 import {useEffect, useState} from "react";
-import {DropdownOption} from "../DropdownOption/DropdownOption.jsx";
+import {DropdownOption} from "../../../../../Common/DropdownOption/DropdownOption.jsx";
 
 import StrategyLogo from "../../../../../../assets/StrategyLogo.png"
 import {Arrow} from "../../../../../Common/Arrow/Arrow.jsx";
