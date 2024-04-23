@@ -11,7 +11,6 @@ export class CalculatorReceiver {
                 headers: {'Authorization': `Bearer ${TraderToken.getToken()}`}
             })
                 .then(response => {
-                    console.log(response)
                     resolve(response.data.amount);
                 })
                 .catch(error => {
@@ -29,7 +28,6 @@ export class CalculatorReceiver {
                     resolve(response.data.calculatorNames);
                 })
                 .catch(error => {
-                    console.log(error)
                     reject(error);
                 });
         });

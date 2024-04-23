@@ -37,32 +37,19 @@
 }
 
 .CalculatorInput {
-    margin-bottom: 10px;
+    margin-bottom: 20px;
 }
 
 .DropdownBtnCalculator {
     width: 65%;
-    height: 25px;
+    height: 30px;
     background: #7B7B7B;
 }
 
-.DropdownCalculator {
-    margin-top: -190px;
-    background: #626262;
-    width: 150px;
-    left: calc(50% - 75px);
-}
-
-.DropdownCalculatorInterval {
-    margin-top: -155px;
-    background: #626262;
-    width: 300px;
-    left: calc(50% - 150px);
-}
 
 .amountInput {
     width: 64%;
-    height: 23px;
+    height: 28px;
     background: #7B7B7B;
     color: white;
     border-style: none;

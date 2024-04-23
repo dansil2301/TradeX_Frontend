@@ -2,7 +2,7 @@ import "./TerminalControlPanel.css"
 import ConnectedCandlesInterval from "./CandlesInterval/CandlesInterval.jsx";
 import ConnectedGraphType from "./GraphType/GraphType.jsx";
 import ConnectedStrategiesElement from "./StrategiesElement/StrategiesElement.jsx";
-import {CalculatorBtn} from "./CalculatorBtn/CalculatorBtn.jsx";
+import {CalculatorBtn} from "./Calculator/CalculatorBtn.jsx";
 
 export function TerminalControlPanel() {
     return (

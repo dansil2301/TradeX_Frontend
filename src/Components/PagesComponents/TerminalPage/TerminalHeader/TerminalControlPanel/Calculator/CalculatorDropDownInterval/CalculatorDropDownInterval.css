@@ -1,0 +1,6 @@
+.DropdownCalculatorInterval {
+    margin-top: -185px;
+    background: #626262;
+    width: 150px;
+    left: calc(50% - 75px);
+}

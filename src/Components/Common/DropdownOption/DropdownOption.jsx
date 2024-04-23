@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 
 export function DropdownOption({ value, name, setStrategy, setIsOpen, isOpen}) {
     const handleClick = () => {
-        setStrategy(name);
+        setStrategy(value);
         setIsOpen(!isOpen);
     };
 

@@ -1,0 +1,6 @@
+.DropdownCalculator {
+    margin-top: -236px;
+    background: #626262;
+    width: 150px;
+    left: calc(50% - 75px);
+}
