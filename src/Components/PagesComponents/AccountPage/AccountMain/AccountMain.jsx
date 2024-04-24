@@ -31,14 +31,18 @@ export function AccountMain() {
         async function editTrader() {
             const username = document.getElementById('Username').textContent;
             const email = document.getElementById('Email').textContent;
-            setTraderStatus(document.getElementById('Status').textContent);
+            let currentStatus = document.getElementById('Status').textContent;
 
-            if (traderStatus === "TRADER_BASIC")
-            { setTraderStatus("TRADER_PLUS"); }
-            else if (traderStatus === "TRADER_PLUS")
-            { setTraderStatus("TRADER_BASIC"); }
+            if (currentStatus === "TRADER_BASIC")
+            { currentStatus = "TRADER_PLUS"; }
+            else if (currentStatus === "TRADER_PLUS")
+            { currentStatus = "TRADER_BASIC"; }
 
-            await TraderTransmitter.EditTrader(username, email, traderStatus);
+            await TraderTransmitter.EditTrader(username, email, currentStatus);
+
+            TraderToken.clearToken();
+            alert("Please login again!");
+            window.location.reload()
         }
 
         editTrader();

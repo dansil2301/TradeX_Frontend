@@ -20,7 +20,7 @@ export class TraderTransmitter {
             email: email,
             status: status
         }
-        console.log(id, params)
+
         await TraderReceiver.EditTrader(id, params);
     }
 
