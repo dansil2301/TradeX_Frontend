@@ -29,6 +29,21 @@ export class TraderReceiver {
         });
     }
 
+    static EditTrader(id, params) {
+        const API_URL = MainServeURL + `api/traders/${id}`;
+        return new Promise((resolve, reject) => {
+            axios.put(API_URL, params, {
+                headers: {'Authorization': `Bearer ${TraderToken.getToken()}`}
+            })
+                .then(response => {
+                    resolve(response.data);
+                })
+                .catch(error => {
+                    reject(error);
+                });
+        });
+    }
+
     static GetTraderById(id) {
         const API_URL = MainServeURL + `api/traders/${id}`;
         return new Promise((resolve, reject) => {

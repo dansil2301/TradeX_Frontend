@@ -1,4 +1,5 @@
 import {TraderReceiver} from "../../ServerReciever/TraderReceiver.js";
+import {TraderToken} from "./TraderToken.js";
 
 export class TraderTransmitter {
     static async CreateTrader(username, email, password, status) {
@@ -10,6 +11,17 @@ export class TraderTransmitter {
         }
 
         return await TraderReceiver.CreateTrader(params);
+    }
+
+    static async EditTrader(username, email, status) {
+        const id = TraderToken.getTraderIdFromToken();
+        const params = {
+            username: username,
+            email: email,
+            status: status
+        }
+        console.log(id, params)
+        await TraderReceiver.EditTrader(id, params);
     }
 
     static async GetTraderById(id) {

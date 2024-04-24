@@ -45,3 +45,24 @@
     grid-template-columns: 1fr 1fr;
     grid-gap: 50px;
 }
+
+.EditingStatus {
+    position: relative;
+}
+
+.EditStatusBtn {
+    position: absolute;
+    top: 64%;
+    left: 50%;
+    border: none;
+    height: 20px;
+    border-radius: 15px;
+    font-family: Roboto, serif;
+    background-color: #595959;
+    transition: background-color 0.2s;
+}
+
+.EditStatusBtn:hover {
+    background-color: #818181;
+}
+
