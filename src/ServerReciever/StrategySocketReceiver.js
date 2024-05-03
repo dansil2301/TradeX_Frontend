@@ -20,7 +20,7 @@ export class StrategySocketReceiver {
 
         this.stompClient.connect({Authorization: `Bearer ${TraderToken.getToken()}`}, () => {
             this.isConnected = true;
-            console.log("Connected to live data.");
+            this.stompClient.send('/app/start-live-data', {}, JSON.stringify(params));
 
             this.stompClient.subscribe('/topic/live-data-message', function(message) {
                 callBackFunction(JSON.parse(message.body));
