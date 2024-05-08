@@ -59,12 +59,14 @@ export function AccountMain() {
             <section className="PersonalInformationBlocks">
                 <InformationBlock name="Username" value={userData.username}/>
                 <InformationBlock name="Email" value={userData.email}/>
-                <div className="EditingStatus">
-                    <InformationBlock name="Status" value={traderStatus}/>
-                    <button className="EditStatusBtn" onClick={updateStatus}>
-                        {traderStatus === "TRADER_BASIC" ? "Become Trader Plus" : "Downgrade to Trader Basic"}
-                    </button>
-                </div>
+                    <div className="EditingStatus">
+                        <InformationBlock name="Status" value={traderStatus}/>
+                        {traderStatus !== "ADMIN" && (
+                            <button className="EditStatusBtn" onClick={updateStatus}>
+                                {traderStatus === "TRADER_BASIC" ? "Become Trader Plus" : "Downgrade to Trader Basic"}
+                            </button>
+                        )}
+                    </div>
                 <InformationBlock name="Created" value={userData.createdAt.split('T')[0]}/>
             </section>
         </div>
