@@ -3,32 +3,48 @@
 
 System_Boundary(c3, "c3") {
     System_Boundary(design, "design") {
-        Container(TerminalHeader, "Terminal Header", "Component collection: React package", "")
-        Container(TerminalMain, "Terminal Main", "Component collection: React package", "")
-        Container(Common, "Common components", "Component collection: React package", "")
+        Container(TerminalPage, "Terminal Page", "Component collection: React package", "")
+        Container(AccountPage, "Account Page", "Component collection: React package", "")
+        Container(IndexPage, "Index Page", "Component collection: React package", "")
+        Container(SignInPage, "Sign in  Page", "Component collection: React package", "")
+        Container(SignUpPage, "Sign up Page", "Component collection: React package", "")
+        Container(TraderOptionsPage, "Trader Options Page", "Component collection: React package", "")
     }
 
     System_Boundary(logic, "logic") {
         Container(StrategyLogic, "Strategy Logic", "JS cls collection: React package", "")
-        Container(EyeMvmLogic, "Eye Movement Logic", "JS cls collection: React package", "")
+        Container(AdminLogic, "Admin Logic", "JS cls collection: React package", "")
+        Container(CalculatorLogic, "Calculator Logic", "JS cls collection: React package", "")
+        Container(TraderLogic, "Trader Logic", "JS cls collection: React package", "")
     }
 
     Container(StrategyReceiver, "Strategy Receiver", "JS cls collection: React package", "")
+    Container(AdminReceiver, "Admin Receiver", "JS cls collection: React package", "")
+    Container(CalculatorReceiver, "Calculator Receiver", "JS cls collection: React package", "")
+    Container(TraderReceiver, "Trader Receiver", "JS cls collection: React package", "")
 }
 Container(web_app, "Web Application", "Container: Java Spring Boot & REST", "Provides all the business rules to manipulate the data in the DB with JSON/HTTP API")
 Container(db, "DataBase", "Container: MySQL", "stores users and market candles")
 Container(tinkoffAPI, "Tinkoff API", "Container: 3d party API", "stores market candles")
 
-Rel(TerminalMain, Common, "Uses")
-Rel(TerminalHeader, Common, "Uses")
-Rel(TerminalMain, TerminalHeader, "Uses")
-
-Rel(TerminalMain, StrategyLogic, "Uses")
-Rel(Common, EyeMvmLogic, "Uses")
+Rel(TerminalPage, StrategyLogic, "Uses")
+Rel(TerminalPage, TraderLogic, "Uses")
+Rel(TerminalPage, CalculatorLogic, "Uses")
+Rel(AccountPage, TraderLogic, "Uses")
+Rel(IndexPage, TraderLogic, "Uses")
+Rel(SignInPage, TraderLogic, "Uses")
+Rel(SignUpPage, TraderLogic, "Uses")
+Rel(TraderOptionsPage, TraderLogic, "Uses")
 
 Rel(StrategyLogic, StrategyReceiver, "Uses")
+Rel(AdminLogic, AdminReceiver, "Uses")
+Rel(CalculatorLogic, CalculatorReceiver, "Uses")
+Rel(TraderLogic, TraderReceiver, "Uses")
 
 Rel(StrategyReceiver, web_app, "Uses")
+Rel(AdminReceiver, web_app, "Uses")
+Rel(CalculatorReceiver, web_app, "Uses")
+Rel(TraderReceiver, web_app, "Uses")
 Rel(web_app, tinkoffAPI, "Gets market data from", "HTTPS")
 Rel(web_app, db, "Gets user data from", "HTTPS")
 @enduml
