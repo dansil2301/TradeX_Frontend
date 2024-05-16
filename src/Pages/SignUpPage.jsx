@@ -3,6 +3,7 @@ import {SignUpMain} from "../Components/PagesComponents/SignUpPage/SignUpMain/Si
 import {useNavigate} from "react-router-dom";
 import {useEffect} from "react";
 import {TraderToken} from "../Logic/TraderLogic/TraderToken.js";
+import {BackgroundImgSignUp} from "../Components/PagesComponents/SignUpPage/BackgroundImg/BackgroundImgSignUp.jsx";
 
 export function SignUpPage() {
     const navigate = useNavigate();
@@ -22,6 +23,7 @@ export function SignUpPage() {
         <div className="SignUpPage" style={{height: 'calc(100vh - 20px)'}}>
             <TraderOptionsHeader/>
             <SignUpMain />
+            <BackgroundImgSignUp />
         </div>
     );
 }
