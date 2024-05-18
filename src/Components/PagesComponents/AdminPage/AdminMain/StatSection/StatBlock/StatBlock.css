@@ -1,0 +1,26 @@
+.StatBlockComponent {
+    display: flex;
+    flex-direction: column;
+    width: 270px;
+    height: 115px;
+    background: #3A3A3A;
+    border-radius: 20px;
+}
+
+.TextGap {
+    margin-left: 18px;
+    font-family: Roboto, serif;
+    font-weight: normal;
+}
+
+.StatBlockText {
+    display: flex;
+    color: #B8B8B8;
+    font-size: 18px;
+}
+
+.StatBlockNumber {
+    display: flex;
+    color: white;
+    font-size: 28px;
+}

@@ -6,7 +6,7 @@ export class AdminReceiver {
     static GetTradersPages(params) {
         const API_URL = MainServeURL + `api/traders/pages`;
         return new Promise((resolve, reject) => {
-            axios.put(API_URL, params, {
+            axios.get(API_URL, params, {
                 headers: {'Authorization': `Bearer ${TraderToken.getToken()}`}
             })
                 .then(response => {
@@ -21,7 +21,7 @@ export class AdminReceiver {
     static GetSearchedTradersPages(params) {
         const API_URL = MainServeURL + `api/traders/search`;
         return new Promise((resolve, reject) => {
-            axios.put(API_URL, params, {
+            axios.get(API_URL, params, {
                 headers: {'Authorization': `Bearer ${TraderToken.getToken()}`}
             })
                 .then(response => {
@@ -34,13 +34,12 @@ export class AdminReceiver {
     }
 
     static GetCountAllTraders() {
-        const API_URL = MainServeURL + `api/traders/countAllStatusTraders`;
+        const API_URL = MainServeURL + `api/traders/countAllTraders`;
         return new Promise((resolve, reject) => {
-            axios.put(API_URL, {
-                headers: {'Authorization': `Bearer ${TraderToken.getToken()}`}
-            })
+            axios.get(API_URL, {
+                headers: {'Authorization': `Bearer ${TraderToken.getToken()}`}})
                 .then(response => {
-                    resolve(response.data);
+                    resolve(response.data.total);
                 })
                 .catch(error => {
                     reject(error);
@@ -49,13 +48,14 @@ export class AdminReceiver {
     }
 
     static GetCountStatusTraders(params) {
-        const API_URL = MainServeURL + `api/traders/countAllTraders`;
+        const API_URL = MainServeURL + `api/traders/countAllStatusTraders`;
         return new Promise((resolve, reject) => {
-            axios.put(API_URL, params, {
+            axios.get(API_URL, {
+                params: params,
                 headers: {'Authorization': `Bearer ${TraderToken.getToken()}`}
             })
                 .then(response => {
-                    resolve(response.data);
+                    resolve(response.data.total);
                 })
                 .catch(error => {
                     reject(error);
