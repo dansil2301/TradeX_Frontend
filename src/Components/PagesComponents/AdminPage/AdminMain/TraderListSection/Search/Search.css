@@ -1,0 +1,15 @@
+.Search {
+    display: flex;
+    justify-content: center;
+    width: 80%;
+    height: 35px;
+}
+
+.customInputSearch {
+    background: #7B7B7B url("../../../../../../assets/AdminPage/search.png") no-repeat 10px center;
+    background-size: 20px;
+    border-style: none;
+    border-radius: 10px;
+    width: 580px;
+    padding-left: 40px;
+}

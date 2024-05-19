@@ -6,7 +6,8 @@ export class AdminReceiver {
     static GetTradersPages(params) {
         const API_URL = MainServeURL + `api/traders/pages`;
         return new Promise((resolve, reject) => {
-            axios.get(API_URL, params, {
+            axios.get(API_URL, {
+                params: params,
                 headers: {'Authorization': `Bearer ${TraderToken.getToken()}`}
             })
                 .then(response => {
@@ -21,7 +22,8 @@ export class AdminReceiver {
     static GetSearchedTradersPages(params) {
         const API_URL = MainServeURL + `api/traders/search`;
         return new Promise((resolve, reject) => {
-            axios.get(API_URL, params, {
+            axios.get(API_URL, {
+                params: params,
                 headers: {'Authorization': `Bearer ${TraderToken.getToken()}`}
             })
                 .then(response => {

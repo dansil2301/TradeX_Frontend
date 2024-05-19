@@ -1,0 +1,29 @@
+.TraderList {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    padding: 20px;
+}
+
+.TraderList table {
+    width: 75%;
+    border-collapse: collapse;
+}
+
+.TraderList th, .TraderList td {
+    padding: 8px;
+    text-align: center;
+    font-family: Roboto, serif;
+}
+
+.TraderList th {
+    font-weight: bold;
+}
+
+.TraderList thead tr {
+    border-bottom: 1px solid white;
+}
+
+.TraderList tbody tr {
+    border-bottom: 1px solid white;
+}
