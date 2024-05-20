@@ -5,7 +5,7 @@ import {AdminMain} from "../Components/PagesComponents/AdminPage/AdminMain/Admin
 
 export function AdminPanel() {
     return (
-        <div className="AccountBody" style={{height: 'calc(100vh - 20px)'}}>
+        <div className="AccountBody" style={{height: 'calc(100vh - 35px)'}}>
             <TraderOptionsHeader />
             <AdminMain />
         </div>

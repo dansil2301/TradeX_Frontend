@@ -1,0 +1,57 @@
+.transparentWindow {
+    opacity: 95%;
+}
+
+.EditHeaderHeader {
+    font-family: Roboto, serif;
+    font-weight: normal;
+    margin-top: -20px;
+}
+
+.EditInput {
+    border-style: none;
+    background: #7B7B7B;
+    border-radius: 10px;
+    font-size: 20px;
+    padding-left: 10px;
+    margin-top: -10px;
+}
+
+.InputHeader {
+    font-family: Roboto, serif;
+    font-weight: normal;
+    font-size: 20px;
+}
+
+.BtnController {
+    margin-top: 20px;
+    width: 80%;
+    display: flex;
+    justify-content: space-around;
+}
+
+.editBtnSave {
+    border-style: none;
+    background: #696969;
+    border-radius: 10px;
+    width: 80px;
+    height: 30px;
+    transition: background-color 0.3s ease;
+}
+
+.editBtnSave:hover {
+    background: #7e7e7e;
+}
+
+.editBtnDelete {
+    border-style: none;
+    background: #EA4338;
+    border-radius: 10px;
+    width: 60px;
+    height: 30px;
+    transition: background-color 0.3s ease;
+}
+
+.editBtnDelete:hover {
+    background: #e85850;
+}

@@ -1,0 +1,10 @@
+.editTraderInput {
+    width: 65%;
+    margin-top: -8px;
+    left: calc(50% - 90px);
+}
+
+.DropdownEditTrader {
+    margin-top: -90px;
+    background: #626262;
+}

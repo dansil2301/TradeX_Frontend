@@ -13,8 +13,7 @@ export class TraderTransmitter {
         return await TraderReceiver.CreateTrader(params);
     }
 
-    static async EditTrader(username, email, status) {
-        const id = TraderToken.getTraderIdFromToken();
+    static async EditTrader(id, username, email, status) {
         const params = {
             username: username,
             email: email,
@@ -22,6 +21,10 @@ export class TraderTransmitter {
         }
 
         await TraderReceiver.EditTrader(id, params);
+    }
+
+    static async DeleteTrader(id) {
+        await TraderReceiver.DeleteTrader(id);
     }
 
     static async GetTraderById(id) {

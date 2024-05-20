@@ -44,6 +44,21 @@ export class TraderReceiver {
         });
     }
 
+    static DeleteTrader(id) {
+        const API_URL = MainServeURL + `api/traders/${id}`;
+        return new Promise((resolve, reject) => {
+            axios.delete(API_URL, {
+                headers: {'Authorization': `Bearer ${TraderToken.getToken()}`}
+            })
+                .then(response => {
+                    resolve(response.data);
+                })
+                .catch(error => {
+                    reject(error);
+                });
+        });
+    }
+
     static GetTraderById(id) {
         const API_URL = MainServeURL + `api/traders/${id}`;
         return new Promise((resolve, reject) => {
