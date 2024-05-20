@@ -38,6 +38,23 @@ export class TraderToken {
         }
     }
 
+    static getTraderStatusFromToken() {
+        const token = localStorage.getItem('accessToken');
+        if (token) {
+            try {
+                const decodedToken = atob(token.split('.')[1]); // Decoding the middle part of the JWT token
+                const { status } = JSON.parse(decodedToken);
+                return status;
+            } catch (error) {
+                console.error('Error decoding JWT token:', error);
+                return null;
+            }
+        } else {
+            console.error('JWT token not found in local storage');
+            return null;
+        }
+    }
+
     static saveToken(token) {
         localStorage.setItem('accessToken', token);
     }
