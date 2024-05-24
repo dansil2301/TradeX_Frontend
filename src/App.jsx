@@ -7,7 +7,8 @@ import {TraderOptionsPage} from "./Pages/TraderOptionsPage.jsx";
 import {SignUpPage} from "./Pages/SignUpPage.jsx";
 import {SignInPage} from "./Pages/SignInPage.jsx";
 import {AccountPage} from "./Pages/AccountPage.jsx";
-import {AdminPanel} from "./Pages/AdminPanel.jsx";
+import {AdminPage} from "./Pages/AdminPage.jsx";
+import {StatisticsPage} from "./Pages/StatisticsPage.jsx";
 
 function App() {
     return (
@@ -15,7 +16,8 @@ function App() {
             <Router>
                 <Routes>
                     <Route path="/" element={<IndexPage />} />
-                    <Route path="/admin" element={<AdminPanel />} />
+                    <Route path="/admin" element={<AdminPage />} />
+                    <Route path="/statistics" element={<StatisticsPage />} />
                     <Route path="/terminal" element={<TerminalPage />} />
                     <Route path="/account" element={<AccountPage />} />
                     <Route path="/trader-options" element={<TraderOptionsPage />} />
