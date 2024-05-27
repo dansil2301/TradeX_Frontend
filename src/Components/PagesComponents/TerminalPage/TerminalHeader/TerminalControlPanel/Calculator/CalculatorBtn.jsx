@@ -59,11 +59,11 @@ export function CalculatorBtn() {
                         <h1 className="calculatorHeader">Profit Calculator</h1>
 
                         <div className="CalculatorInput">
-                            <DateInput date={startDate} setDate={setStartDate} />
+                            <DateInput date={startDate} setDate={setStartDate} Name="Start Date" />
                         </div>
 
                         <div className="CalculatorInput">
-                            <DateInput date={endDate} setDate={setEndDate} />
+                            <DateInput date={endDate} setDate={setEndDate} Name="End Date"/>
                         </div>
 
                         <DropDownStrategies calculatorName={calculatorName} setCalculatorName={setCalculatorName}/>
