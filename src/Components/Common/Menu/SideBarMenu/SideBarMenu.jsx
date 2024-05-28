@@ -35,9 +35,14 @@ export function SideBarMenu({ isVisible, setVisible }) {
                     <button className="WebsiteSectionsEl">Terminal</button>
                 </Link>
                 {isAdmin && (
-                    <Link to="/admin">
-                        <button className="WebsiteSectionsEl">Admin Panel</button>
-                    </Link>
+                    <>
+                        <Link to="/admin">
+                            <button className="WebsiteSectionsEl">Admin Panel</button>
+                        </Link>
+                        <Link to="/statistics">
+                            <button className="WebsiteSectionsEl">Admin Panel</button>
+                        </Link>
+                    </>
                 )}
             </div>
         </div>
