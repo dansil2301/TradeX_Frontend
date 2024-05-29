@@ -7,16 +7,19 @@ export class StatisticsLogic {
             "to": to,
             "pageName": pageName
         };
-
-        return StatisticsReceiver.getStatistics(params);
+        return await StatisticsReceiver.getStatistics(params);
     }
 
-    static createPageVisit(userId, pageName) {
+    static async createPageVisit(userId, pageName) {
         const params = {
             "userId": userId,
             "pageName": pageName
         };
 
-        StatisticsReceiver.createPageVisit(params);
+        await StatisticsReceiver.createPageVisit(params);
+    }
+
+    static async getPageNames() {
+        return await StatisticsReceiver.getPageNames();
     }
 }

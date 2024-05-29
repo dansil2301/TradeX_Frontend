@@ -1,36 +1,35 @@
 import {Fragment, useEffect, useRef, useState} from "react";
-import PropTypes from "prop-types";
-import {StrategyChartsFactory} from "../../../../../Logic/StrategyLogic/StrategyChartsFactory.js";
-import {connect} from "react-redux";
 import Loading from "../../../../Common/Loading/Loading.jsx";
 import {SignIn} from "../../../../Common/SignIn/SignIn.jsx";
+import {StatisticsChartFactory} from "../../../../../Logic/StatisticsLogic/StatisticsChartFactory.js";
+import {StatisticsLogic} from "../../../../../Logic/StatisticsLogic/StatisticsLogic.js";
 
-const StrategyChart = ({ candleInterval, strategy, graphType }) => {
-    const chartFactory = new StrategyChartsFactory();
-    const chartContainer = useRef(null);
+export function StatisticsChart({ pageName, fromDate, toDate }) {
+    const chartFactory = new StatisticsChartFactory();
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [data, setData] = useState([]);
+    const chartContainer = useRef(null);
 
     useEffect(() => {
-        const fetchCandlesStrategies = async () => {
+        const fetchStatistics = async () => {
             setError(null);
             setLoading(true);
-            chartFactory.fetchInitialData()
+            pageName = pageName !== "All" ? pageName : "";
+            StatisticsLogic.getStatistics(fromDate, toDate, pageName)
                 .then(res => {setData(res);})
                 .catch(error => {setError(error);})
                 .finally(() => setLoading(false));
         };
 
-        chartFactory.setParams(candleInterval, strategy, graphType);
-        fetchCandlesStrategies();
-    }, [candleInterval, strategy, graphType]);
+        fetchStatistics();
+    }, [pageName, fromDate, toDate]);
 
     useEffect(() => {
         async function creatChart() {
             if (chartContainer && chartContainer.current) {
                 const ctx = chartContainer.current.getContext('2d');
-                const chartInstance = await chartFactory.createChart(data, ctx, graphType);
+                const chartInstance = await chartFactory.createChart(data, ctx);
 
                 return () => {
                     chartInstance.destroy();
@@ -51,24 +50,9 @@ const StrategyChart = ({ candleInterval, strategy, graphType }) => {
                 ) : error ? (
                     <div className="Error">Error: {error.message}</div>
                 ) : (
-                    <canvas ref={chartContainer} />
+                    <canvas ref={chartContainer} className="statisticsChart"/>
                 )
             }
         </Fragment>
-    )
+    );
 }
-
-StrategyChart.propTypes = {
-    candleInterval: PropTypes.string.isRequired,
-    strategy: PropTypes.string.isRequired,
-    graphType: PropTypes.string.isRequired,
-};
-
-const mapStateToProps = (state) => ({
-    graphType: state.graphType,
-    strategy: state.strategy,
-    candleInterval: state.candleInterval
-});
-
-const ConnectedStrategyChart = connect(mapStateToProps)(StrategyChart);
-export default ConnectedStrategyChart;
