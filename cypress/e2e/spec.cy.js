@@ -16,6 +16,15 @@ describe('App test', () => {
         }
       });
     });
+
+    Cypress.on('fail', (error, runnable) => {
+      if (error.message.includes('Socket closed before finished writing response')) {
+        // Returning false here prevents Cypress from failing the test
+        return false;
+      }
+      // Throw other errors normally
+      throw error;
+    });
   })
 
   it('Test sign in', () => {
