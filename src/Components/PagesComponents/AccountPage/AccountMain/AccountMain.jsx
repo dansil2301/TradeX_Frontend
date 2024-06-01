@@ -38,7 +38,8 @@ export function AccountMain() {
             else if (currentStatus === "TRADER_PLUS")
             { currentStatus = "TRADER_BASIC"; }
 
-            await TraderTransmitter.EditTrader(username, email, currentStatus);
+            const id = TraderToken.getTraderIdFromToken();
+            await TraderTransmitter.EditTrader(id, username, email, currentStatus);
 
             TraderToken.clearToken();
             alert("Please login again!");
